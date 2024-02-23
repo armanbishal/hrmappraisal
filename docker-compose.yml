@@ -1,0 +1,9 @@
+version: '3'
+
+services: 
+   ipdc_backend_web:
+       command: python manage.py runserver 0.0.0.0:9000
+       build:
+         context: .
+       ports:
+         - "9000:9000"

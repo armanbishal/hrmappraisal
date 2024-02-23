@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+
+                <h1>Salary Certificate Request Approve List</h1>
+                <div class="section-header-breadcrumb">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4></h4>
+                        </div>
+                        {% for msg in messages %}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                {{ msg }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="table-1">
+                                    <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Reference Number</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                        <th>Certificated</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for data in certificaterequest %}
+                                        <tr>
+
+                                            <td>{{ data.date }}</td>
+                                            <td>{{ data.refno }}</td>
+                                            <td>{{ data.remark }}</td>
+                                            <td>
+                                                {% if data.status == 0 %}
+                                                    <div class="badge badge-warning">In Progress</div>
+                                                {% elif data.status == 1 %}
+                                                    <div class="badge badge-success">Approve</div>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if data.status == 0 %}
+                                                    <a href="{% url 'requisitionfrom:CertificaterequestStatus' data.id %}">
+                                                        <button class="btn btn-danger btn-sm rounded" type="button"
+                                                                data-toggle="tooltip"
+                                                                data-placement="top" title="Delete">Approved
+                                                        </button>
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if data.status == 1 %}
+                                                    <a href="{% url 'requisitionfrom:SalaryCertificateview' data.employee_id %}">
+                                                        <button class="btn btn-danger btn-sm rounded" type="button"
+                                                                data-toggle="tooltip"
+                                                                data-placement="top" title="Delete">Certificated
+                                                        </button>
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock content %}

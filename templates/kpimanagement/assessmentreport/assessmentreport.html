@@ -1,0 +1,910 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <script>
+        function enableButton() {
+            var selectelem = document.getElementById('sbuddl');
+            var btnelem = document.getElementById('sbu-search');
+            btnelem.disabled = !selectelem.value;
+        }
+    </script>
+
+    <style>
+        .dropdown-width {
+            min-width: 300px;
+        }
+
+        #showcase {
+            display: block;
+        }
+
+        body {
+            counter-reset: Serial; /* Set the Serial counter to 0 */
+        }
+
+        tr td:first-child:before {
+            counter-increment: Serial; /* Increment the Serial counter */
+            content: counter(Serial); /* Display the counter */
+        }
+
+        tr td:first-child:before {
+            counter-increment: Serial; /* Increment the Serial counter */
+            content: counter(Serial); /* Display the counter */
+        }
+
+        .table-borderless > thead > tr > th {
+            border: none;
+        }
+
+        .table-sticky table {
+            border-spacing: 0;
+        }
+
+        .table-sticky th {
+            position: sticky;
+            top: 0;
+            border: 1px solid #bbbbbb;
+        }
+
+        .table-sticky td {
+            border: 1px solid #bbbbbb;
+        }
+
+        .table-sticky th:nth-child(1),
+        .table-sticky td:nth-child(1) {
+            width: 30px;
+            min-width: 30px;
+            position: sticky;
+            left: 0px;
+        }
+
+        .table-sticky td:nth-child(1) {
+            background: white;
+        }
+
+        .table-sticky th:nth-child(1) {
+            z-index: 2;
+        }
+
+    </style>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="#" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>Assessment Report</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="#">Posts</a></div>
+                </div>
+            </div>
+
+            <div class="section-body">
+                <form action="" method="post"
+                      enctype="multipart/form-data"
+                      id="sbu-search-form" autocomplete="off" name="search" value="searchForm">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4></h4>
+                                </div>
+                                <div class="card-body">
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-block alert-{% if message.level_tag == 'error' %}danger{% elif message.level_tag == 'success' %}success{% endif %} alert-dismissable"
+                                                 role="alert">
+                                                {% if 'safe' in message.tags %}
+                                                    {{ message|safe }}
+                                                {% else %}
+                                                    {{ message }}
+                                                {% endif %}
+                                                {{ messages.messages }}
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">SBU</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <select name="sbu" id="sbuddl" class="form-control selectric">
+                                                {% for i in sbu_list %}
+                                                    <option value="{{ i.name }}">{{ i.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <button name="sbu-search" id="sbu-search" type="submit"
+                                                    class="btn btn-primary">Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    {% if sbu_flag == 1 %}
+                                        <div id="showcase">
+                                            <h4 class=" text-center mt-4 mb-3">Employee Lists ({{ sbu_search }})</h4>
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered" id="table-1">
+                                                    <thead>
+                                                    <tr class="text-nowrap" style="height: 60px">
+                                                        <th style="display: none">SL</th>
+                                                        <th>Action</th>
+                                                        <th>Status</th>
+                                                        <th>ID No.</th>
+                                                        <th>Employee Name</th>
+                                                        <th>Designation</th>
+                                                        <th>DOJ</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for data in assessment_details %}
+                                                        <tr class="text-nowrap">
+                                                            <td style="display: none"></td>
+                                                            <td>
+                                                                <a class="btn btn-primary btn-sm" href="{% url 'kpimanagement:assessmentReportSingle' data.id %}">
+                                                                    <i class="fas fa-plus text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                            <td style="font-weight: 700">
+                                                                {% if data.flag == 1 %}
+                                                                    <span class="text-success">Complete</span>
+                                                                {% else %}
+                                                                    <span class="text-primary">In Progress</span>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td id="likdodf" scope="row">{{ data.employee.employee_id }}</td>
+                                                            <input type="hidden" name="getEmID" value="{{ data.employee.employee_id }}"/>
+                                                            <td>{{ data.employee.name }}</td>
+                                                            <td>{{ data.employee.designation }}</td>
+                                                            <td id="date1">{{ data.employee.date_of_joining }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+
+{#  <div class="table-responsive text-nowrap tableFixHead table-sticky">#}
+{#                                                    <table class="table table-striped table-bordered table-hover table-borderless"#}
+{#                                                           id="tableddl">#}
+{#                                                        <thead>#}
+{#                                                        <tr class="text-nowrap" style="height: 60px;">#}
+{#                                                            <th class="header"#}
+{#                                                                style="color: white ;background-color: cadetblue">SL#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f"> ID#}
+{#                                                                No.#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Update#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #686256">#}
+{#                                                                Employee#}
+{#                                                                Name#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Designation#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">DOJ#}
+{#                                                            </th>#}
+{##}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Confirmation / Increment / No Increment#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Duration#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                SBU#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">Sub#}
+{#                                                                SBU#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">PM#}
+{#                                                                Name#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">SBU#}
+{#                                                                Director Name#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Effective Date#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Total#}
+{#                                                                Salary#}
+{#                                                                and Allowance {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Basic {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                House Rent {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Medical#}
+{#                                                                Allowance {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Conveyance#}
+{#                                                                Allowance {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                WPPF {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Special#}
+{#                                                                Bonus {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Mobile#}
+{#                                                                and#}
+{#                                                                Other Allowance {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Project#}
+{#                                                                Expense {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Other#}
+{#                                                                Benefits {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Gross#}
+{#                                                                Salary {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">PF#}
+{#                                                                Com#}
+{#                                                                Contribution {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Grade#}
+{#                                                                Salary A {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Year#}
+{#                                                                of#}
+{#                                                                Assessment Duation {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">KPI#}
+{#                                                                Objective {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                KPI-Value {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                KPI-HR {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                KPI-Overall {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">% of#}
+{#                                                                KPI-Objective {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">% of#}
+{#                                                                KPI-Value {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">% of#}
+{#                                                                KPI-HR {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Weighted#}
+{#                                                                Average of KPI % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Criticality {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Potential#}
+{#                                                                for Improvement {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Technical/Implementation/Operational {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Top/Average/Bottom Performer {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">Best#}
+{#                                                                performer inside team {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">Best#}
+{#                                                                innovator inside team {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">Best#}
+{#                                                                Performer in the organization {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Proposed#}
+{#                                                                Designation {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">Best#}
+{#                                                                Performer among all PM {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Salary#}
+{#                                                                Grade {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Increment Amount (HR) {{ current_year }} (A)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">HR#}
+{#                                                                New#}
+{#                                                                Gross Salary {{ current_year }} (A)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">HR#}
+{#                                                                % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Fixed#}
+{#                                                                Increment (%) {{ current_year }} (B)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Fixed#}
+{#                                                                Increment New Gross Salary B {{ current_year }} (B)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Team#}
+{#                                                                Distribution (%) {{ current_year }} (C)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Difference = New salary A- New salary#}
+{#                                                                B {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Increment: {{ year.year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Proposed#}
+{#                                                                By SBU Director/PM/Self {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">% of#}
+{#                                                                Increment: {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">New#}
+{#                                                                Gross Salary B {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">CAGR#}
+{#                                                                3#}
+{#                                                                years {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Avarage#}
+{#                                                                3 Years {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Average#}
+{#                                                                Actual {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                KPI-Overall {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Weighted#}
+{#                                                                Average of KPI % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Increment with KPI % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">New#}
+{#                                                                Gross Salary KPI % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">Gap#}
+{#                                                                Manual vs Formula {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Remarks {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Remarks 2 {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                        </tr>#}
+{#                                                        </thead>#}
+{#                                                        <tbody>#}
+{#                                                        {% for data in assessment_details %}#}
+{#                                                            <tr class="text-nowrap">#}
+{#                                                                <td></td>#}
+{#                                                                <td id="likdodf"#}
+{#                                                                    scope="row">{{ data.employee.employee_id }} </td>#}
+{#                                                                <input type="hidden" name="getEmID"#}
+{#                                                                       value="{{ data.employee.employee_id }}">#}
+{#                                                                <td>#}
+{#                                                                    <a class="btn btn-primary btn-sm"#}
+{#                                                                       href="{% url 'kpimanagement:assessmentReportSingle' data.id %}"#}
+{#                                                                    >#}
+{#                                                                        <i class="fas fa-plus text-white"></i>#}
+{#                                                                    </a>#}
+{#                                                                </td>#}
+{#                                                                <td>{{ data.employee.name }}</td>#}
+{#                                                                <td>{{ data.employee.designation }}</td>#}
+{#                                                                <td id="date1">{{ data.employee.date_of_joining }}</td>#}
+{##}
+{##}
+{##}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.confirmation_increment_noincrement != None %}#}
+{#                                                                        <select name="{{ form.confirmation_increment_noincrement.html_name }}"#}
+{#                                                                                id="{{ form.confirmation_increment_noincrement.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in confirmantion_increment_noincrement_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.confirmation_increment_noincrement %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.confirmation_increment_noincrement.html_name }}"#}
+{#                                                                                id="{{ form.confirmation_increment_noincrement.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.confirmation_increment_noincrement %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td>{{ data.employee.date_of_joining|timesince }}</td>#}
+{#                                                                <td>{{ data.employee.sbu }}</td>#}
+{#                                                                <td>{{ data.employee.sub_sbu }}</td>#}
+{#                                                                <td>{{ data.employee.supervisor }}</td>#}
+{#                                                                <td>{{ data.employee.sbu.director_name }}</td>#}
+{#                                                                <td>1-Jan-{{ year.year }}</td>#}
+{#                                                                <td>{{ data.total_salary_and_allowance }}</td>#}
+{#                                                                <td>{{ data.basic_salary }}</td>#}
+{#                                                                <td>{{ data.house_rent }}</td>#}
+{#                                                                <td>{{ data.medical_allowance }}</td>#}
+{#                                                                <td>{{ data.conveyance_allowance }}</td>#}
+{#                                                                <td>{{ data.wppf }}</td>#}
+{#                                                                <td>{{ data.special_bonus }}</td>#}
+{#                                                                <td>{{ data.mobile_and_other_allowance }}</td>#}
+{#                                                                <td>{{ data.project_expense }}</td>#}
+{#                                                                <td>{{ data.other_benefit }}</td>#}
+{#                                                                <td>{{ data.gross_salary }}</td>#}
+{#                                                                <td>{{ data.pf_com_contribution }}</td>#}
+{#                                                                <td></td>#}
+{#                                                                Grade 2022#}
+{#                                                                <td>{{ data.employee.assessmentDuration }}</td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.kpi_objective != None %}#}
+{#                                                                        <select name="{{ form.kpi_objective.html_name }}"#}
+{#                                                                                id="{{ form.kpi_objective.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in kpi_objective_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.kpi_objective %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.kpi_objective.html_name }}"#}
+{#                                                                                id="{{ form.kpi_objective.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.kpi_objective %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.kpi_value != None %}#}
+{#                                                                        <select name="{{ form.kpi_value.html_name }}"#}
+{#                                                                                id="{{ form.kpi_value.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in kpi_value_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.kpi_value %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.kpi_value.html_name }}"#}
+{#                                                                                id="{{ form.kpi_value.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.kpi_value %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.hr_rating != None %}#}
+{#                                                                        <select name="{{ form.hr_rating.html_name }}"#}
+{#                                                                                id="{{ form.hr_rating.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in hr_rating_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.hr_rating %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.hr_rating.html_name }}"#}
+{#                                                                                id="{{ form.hr_rating.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.hr_rating %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.kpi_overall != None %}#}
+{#                                                                        {{ data.kpi_overall }}#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.percentage_kpi_objective != None %}#}
+{#                                                                        {{ data.percentage_kpi_objective }}%#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.percentage_kpi_value != None %}#}
+{#                                                                        {{ data.percentage_kpi_value }}%#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.percentage_kpi_hr != None %}#}
+{#                                                                        {{ data.percentage_kpi_hr }}%#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.weighted_average_kpi != None %}#}
+{#                                                                        {{ data.weighted_average_kpi }}%#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.criticality != None %}#}
+{#                                                                        <select name="{{ form.criticality.html_name }}"#}
+{#                                                                                id="{{ form.criticality.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in criticality_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.criticality %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.criticality.html_name }}"#}
+{#                                                                                id="{{ form.criticality.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.criticality %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.potential_for_improvement != None %}#}
+{#                                                                        <select name="{{ form.potential_for_improvement.html_name }}"#}
+{#                                                                                id="{{ form.potential_for_improvement.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in potential_for_improvement_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.potential_for_improvement %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.potential_for_improvement.html_name }}"#}
+{#                                                                                id="{{ form.potential_for_improvement.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.potential_for_improvement %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.technical_implementation_operational != None %}#}
+{#                                                                        <select name="{{ form.technical_implementation_operational.html_name }}"#}
+{#                                                                                id="{{ form.technical_implementation_operational.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in technical_implementation_operational_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.technical_implementation_operational %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.technical_implementation_operational.html_name }}"#}
+{#                                                                                id="{{ form.technical_implementation_operational.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.technical_implementation_operational %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.top_average_bottom_performer != None %}#}
+{#                                                                        <select name="{{ form.top_average_bottom_performer.html_name }}"#}
+{#                                                                                id="{{ form.top_average_bottom_performer.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in top_average_bottom_performer_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.top_average_bottom_performer %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.top_average_bottom_performer.html_name }}"#}
+{#                                                                                id="{{ form.top_average_bottom_performer.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.top_average_bottom_performer %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{##}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.best_performer_team != None %}#}
+{#                                                                        <select name="{{ form.best_performer_team.html_name }}"#}
+{#                                                                                id="{{ form.best_performer_team.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in best_performer_team_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.best_performer_team %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.best_performer_team.html_name }}"#}
+{#                                                                                id="{{ form.best_performer_team.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.best_performer_team %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.best_innovator_team != None %}#}
+{#                                                                        <select name="{{ form.best_innovator_team.html_name }}"#}
+{#                                                                                id="{{ form.best_innovator_team.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in best_innovator_team_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.best_innovator_team %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.best_innovator_team.html_name }}"#}
+{#                                                                                id="{{ form.best_innovator_team.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.best_innovator_team %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.best_performer_org != None %}#}
+{#                                                                        <select name="{{ form.best_performer_org.html_name }}"#}
+{#                                                                                id="{{ form.best_performer_org.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in best_performer_organization_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.best_performer_org %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.best_performer_org.html_name }}"#}
+{#                                                                                id="{{ form.best_performer_org.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.best_performer_org %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.proposed_designation != None %}#}
+{#                                                                        <input#}
+{#                                                                                class="form-control"#}
+{#                                                                                type="text"#}
+{#                                                                                id="{{ form.proposed_designation.id_for_label }}"#}
+{#                                                                                name="{{ form.proposed_designation.html_name }}"#}
+{#                                                                                value="{{ data.proposed_designation }}"#}
+{#                                                                                placeholder="Proposed Designation"#}
+{#                                                                        />#}
+{#                                                                    {% else %}#}
+{#                                                                        <input#}
+{#                                                                                class="form-control"#}
+{#                                                                                type="text"#}
+{#                                                                                id="{{ form.proposed_designation.id_for_label }}"#}
+{#                                                                                name="{{ form.proposed_designation.html_name }}"#}
+{#                                                                                value=""#}
+{#                                                                                placeholder="Proposed Designation"#}
+{#                                                                        />#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.best_performer_pm != None %}#}
+{#                                                                        <select name="{{ form.best_performer_pm.html_name }}"#}
+{#                                                                                id="{{ form.best_performer_pm.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in best_performer_pm_obj %}#}
+{#                                                                                <option value="{{ widget.id }}"#}
+{#                                                                                        {% if widget == data.best_performer_pm %}#}
+{#                                                                                        selected{% endif %}>{{ widget }}</option>#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% else %}#}
+{#                                                                        <select name="{{ form.best_performer_pm.html_name }}"#}
+{#                                                                                id="{{ form.best_performer_pm.id_for_label }}"#}
+{#                                                                                value=""#}
+{#                                                                                class="select2 form-select">#}
+{#                                                                            {% for widget in form.best_performer_pm %}#}
+{#                                                                                {{ widget }}#}
+{#                                                                            {% endfor %}#}
+{#                                                                        </select>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td>{{ data.salary_grade }}</td>#}
+{#                                                                Salary Grade 2022#}
+{#                                                                <td>{{ data.increment_amount_a }}</td>#}
+{#                                                                Increment Amount (HR) 2022 (A)#}
+{#                                                                <td>{{ data.hr_new_gross_salary_a }}</td>#}
+{#                                                                HR New Gross Salary 2022 (A)#}
+{#                                                                <td>#}
+{#                                                                    {% if data.percentage_hr_a != None %}#}
+{#                                                                        {{ data.percentage_hr_a }}#}
+{#                                                                    {% else %}#}
+{#                                                                        None#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                HR % 2022#}
+{#                                                                <td>{{ data.fixed_increment_b }}</td>#}
+{#                                                                Fixed Increment (%) 2022 (B)#}
+{#                                                                <td>{{ data.fixed_increment_new_gross_salary_b }}</td>#}
+{#                                                                Fixed Increment New Gross Salary B 2022 (B)#}
+{#                                                                <td>{{ data.team_distribution_percentage_c }}</td>#}
+{#                                                                Team Distribution (%) 2022 ( C)#}
+{#                                                                <td>({{ data.difference_new_salary_a_new_salary_b }})#}
+{#                                                                </td>#}
+{#                                                                Difference = New salary A- New salary B#}
+{#                                                                <td></td>#}
+{#                                                                Increment 2022#}
+{#                                                                <td>#}
+{#                                                                    {% if data.proposed_by_sbu_director_pm_self != None %}#}
+{#                                                                        <input name="{{ form.proposed_by_sbu_director_pm_self.html_name }}"#}
+{#                                                                               id="{{ form.proposed_by_sbu_director_pm_self.id_for_label }}"#}
+{#                                                                               type="text" class="form-control"#}
+{#                                                                               value="{{ data.proposed_by_sbu_director_pm_self }}"#}
+{#                                                                               placeholder=""#}
+{#                                                                        />#}
+{#                                                                    {% else %}#}
+{#                                                                        <input name="{{ form.proposed_by_sbu_director_pm_self.html_name }}"#}
+{#                                                                               id="{{ form.proposed_by_sbu_director_pm_self.id_for_label }}"#}
+{#                                                                               type="text" class="form-control"#}
+{#                                                                               value=""#}
+{#                                                                               placeholder="Enter Amount"#}
+{#                                                                        />#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                Proposed By SBU Director/PM/Self 2022#}
+{#                                                                <td>#}
+{#                                                                    {% if data.percentage_of_increment != None %}#}
+{#                                                                        {{ data.percentage_of_increment }}%#}
+{#                                                                    {% else %}#}
+{#                                                                        None#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                % of Increment: 2022#}
+{#                                                                <td>{{ data.new_gross_salary_b }}</td>#}
+{#                                                                New Gross Salary B 2022#}
+{#                                                                <td>{{ data.cagr_three_years }}</td>#}
+{#                                                                CAGR 3 years#}
+{#                                                                <td>{{ data.average_three_years }}</td>#}
+{#                                                                Avarage 3 Years#}
+{#                                                                <td>{{ data.average_actual }}</td>#}
+{#                                                                Average Actual#}
+{#                                                                <td>{{ data.kpi_overall }}</td>#}
+{#                                                                KPI-Overall 2022#}
+{#                                                                <td>#}
+{#                                                                    {% if data.weighted_average_kpi != None %}#}
+{#                                                                        {{ data.weighted_average_kpi }}%#}
+{#                                                                    {% else %}#}
+{#                                                                        None#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                Weighted Average of KPI %#}
+{#                                                                <td>{{ data.increment_with_kpi_percentage }}</td>#}
+{#                                                                Increment with KPI %#}
+{#                                                                <td>{{ data.new_gross_salary_kpi_percentage }}</td>#}
+{#                                                                New Gross Salary KPI % 2022#}
+{#                                                                <td>{{ data.gap_manual_formula }}</td>#}
+{#                                                                Gap Manual vs Formula#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.remarks != None %}#}
+{#                                                                        <textarea#}
+{#                                                                                name="{{ form.remarks.html_name }}"#}
+{#                                                                                cols="30"#}
+{#                                                                                rows="1" type="text"#}
+{#                                                                                class="form-control"#}
+{#                                                                                id="{{ form.remarks.id_for_label }}"#}
+{#                                                                                style="resize: none"#}
+{#                                                                                placeholder="Remarks">{{ data.remarks }}</textarea>#}
+{#                                                                    {% else %}#}
+{#                                                                        <textarea#}
+{#                                                                                name="{{ form.remarks.html_name }}"#}
+{#                                                                                cols="30"#}
+{#                                                                                rows="1" type="text"#}
+{#                                                                                class="form-control"#}
+{#                                                                                id="{{ form.remarks.id_for_label }}"#}
+{#                                                                                style="resize: none"#}
+{#                                                                                placeholder="Remarks"></textarea>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                                <td class="dropdown-width">#}
+{#                                                                    {% if data.remarks_two != None %}#}
+{#                                                                        <textarea#}
+{#                                                                                name="{{ form.remarks_two.html_name }}"#}
+{#                                                                                cols="30"#}
+{#                                                                                rows="1" type="text"#}
+{#                                                                                class="form-control"#}
+{#                                                                                id="{{ form.remarks_two.id_for_label }}"#}
+{#                                                                                style="resize: none"#}
+{#                                                                                placeholder="Remarks">{{ data.remarks_two }}</textarea>#}
+{#                                                                    {% else %}#}
+{#                                                                        <textarea#}
+{#                                                                                name="{{ form.remarks_two.html_name }}"#}
+{#                                                                                cols="30"#}
+{#                                                                                rows="1" type="text"#}
+{#                                                                                class="form-control"#}
+{#                                                                                id="{{ form.remarks_two.id_for_label }}"#}
+{#                                                                                style="resize: none"#}
+{#                                                                                placeholder="Remarks"></textarea>#}
+{#                                                                    {% endif %}#}
+{#                                                                </td>#}
+{#                                                            </tr>#}
+{#                                                        {% endfor %}#}
+{#                                                        </tbody>#}
+{#                                                    </table>#}
+{#                                                </div>#}

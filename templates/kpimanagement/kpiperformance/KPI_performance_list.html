@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="#" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>Employee</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="buttons">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered" id="table-1">
+                                    <thead>
+                                    <tr>
+                                        <th>Employee ID</th>
+                                        <th>Name</th>
+                                        <th>Designation</th>
+                                        <th>SBU</th>
+                                        <th>Sub SBU</th>
+                                        <th>Date of Joining</th>
+                                        <th>Supervisor</th>
+{#                                        <th>Project</th>#}
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for data in employee %}
+                                        <tr>
+                                        <td>{{ data.employee.employee_id}} </td>
+                                        <td>{{ data.employee.name }}</td>
+                                        <td>{{ data.employee.designation }}</td>
+                                        <td>{{ data.employee.sbu }}</td>
+                                        <td>{{ data.employee.sub_sbu }}</td>
+                                        <td>{{ data.employee.date_of_joining }}</td>
+                                        <td>{{ data.employee.supervisor }}</td>
+{#                                        <td>{{ data.employee.project }}#}
+                                        <td>
+                                            <a href="{% url 'kpimanagement:IndividualEmployeeDetails' data.id %}">
+                                                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                                                </a>
+                                        </td>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock content %}

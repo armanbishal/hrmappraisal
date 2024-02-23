@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="#" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>Assessment Report</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="#">Posts</a></div>
+                </div>
+            </div>
+
+            <div class="section-body">
+                <form action="{% url "report:assessmentSbuReport" %}" method="post"
+                      enctype="multipart/form-data"
+                      id="sbu-search-form" autocomplete="off" name="search" value="searchForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4></h4>
+                                </div>
+                                <div class="card-body">
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-block alert-{% if message.level_tag == 'error' %}danger{% elif message.level_tag == 'success' %}success{% endif %} alert-dismissable"
+                                                 role="alert">
+                                                {% if 'safe' in message.tags %}
+                                                    {{ message|safe }}
+                                                {% else %}
+                                                    {{ message }}
+                                                {% endif %}
+                                                {{ messages.messages }}
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">SBU</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <select name="sbu" id="sbu" class="form-control selectric">
+                                                {% for i in sbu_list %}
+                                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Enter
+                                            Year</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <select name="year" id="year" class="form-control selectric">
+                                                {% for i in year_list %}
+                                                    <option value="{{ i }}">{{ i }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                        <div class="col-sm-12 col-md-7">
+
+                                            <button type="submit" name="pdf_export" class="btn btn-primary">Export
+                                                (.pdf)
+                                            </button>
+                                            <button type="submit" name="xls_export" class="btn btn-dark">Export
+                                                (.xls)
+                                            </button>
+
+                                            {#                                            <button name="sbu-search" id="sbu-search" type="submit"#}
+                                            {#                                                    class="btn btn-primary">Search#}
+                                            {#                                            </button>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </form>
+            </div>
+        </section>
+    </div>
+{% endblock %}

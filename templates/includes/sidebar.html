@@ -1,0 +1,301 @@
+{% block content %}
+    <div class="main-sidebar">
+        <aside id="sidebar-wrapper">
+            <div class="sidebar-brand">
+                <a href="#">HRM | Appraisal</a>
+            </div>
+            <div class="sidebar-brand sidebar-brand-sm">
+                <a href="#">HRMAP</a>
+            </div>
+            <ul class="sidebar-menu">
+                {% for modulename in request.session.module %}
+                    {% if modulename.module_type_id == 1 %}
+                        {% for dataurl in data.urls %}
+                            {% if dataurl == 'dashboard' %}
+                                <li class="nav-item dropdown active">
+                                    <a href="{% url "usermanagement:dashboard" %}" class="nav-link"><i
+                                            class="fas fa-fire"></i><span>Dashboard</span></a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if modulename.module_type_id == 2 %}
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i>
+                                <span>User Management</span></a>
+                            <ul class="dropdown-menu">
+                                {% for dataurl in data.urls %}
+                                    {% if dataurl == 'authuserlist' %}
+                                        <li class="menu-item"><a href="{% url "usermanagement:authuserlist" %}">User</a></li>
+                                    {% elif dataurl == 'authuserrole' %}
+                                        <li class="menu-item"><a href="{% url "usermanagement:authuserrole" %}">Role</a></li>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+
+                    {% endif %}
+                    {% if modulename.module_type_id == 3 %}
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                                    class="fas fa-columns"></i>
+                                <span>Configuration </span></a>
+                            <ul class="dropdown-menu">
+                                {% for dataurl in data.urls %}
+                                    {% if dataurl == 'EmployeeListView' %}
+                                        <li>
+                                            <a href="{% url "configuration:EmployeeListView" %}">
+                                                Employee List
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'ConfirmationIncrementNoincrementListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:ConfirmationIncrementNoincrementListView' %}">
+                                                Increment
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'SBUDirectorNameListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:SBUDirectorNameListView' %}">
+                                                SBU Director Name
+                                            </a>
+                                        </li>
+
+                                    {% elif dataurl == 'SBUListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:SBUListView' %}">
+                                                SBU
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'SubSBUListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:SubSBUListView' %}">
+                                                Sub SBU
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'SupervisorListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:SupervisorListView' %}">
+                                                Supervisor
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'ProjectListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:ProjectListView' %}">
+                                                Project
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'ReviewRatingListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:ReviewRatingListView' %}">
+                                                Review Rating
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'KPIConfigListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:KPIConfigListView' %}">
+                                                KPI Configuration
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'EvaluationListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:EvaluationListView' %}">
+                                                Evaluation
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'KPIObjectiveListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:KPIObjectiveListView' %}">
+                                                KPI Objective
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'KPIValueListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:KPIValueListView' %}">
+                                                KPI Value
+                                            </a>
+                                        </li>
+
+                                    {% elif dataurl == 'HRRatingListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:HRRatingListView' %}">
+                                                HR Rating
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'CriticalityListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:CriticalityListView' %}">
+                                                Criticality
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'PotentialForImprovementListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:PotentialForImprovementListView' %}">
+                                                Potential For Improvement
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'TechnicalImplementationOperationalListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:TechnicalImplementationOperationalListView' %}">
+                                                Team Lead
+
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'TopAverageBottomPerformerListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:TopAverageBottomPerformerListView' %}"
+                                            >Bottom Performer
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'BestPerformerTeamListView' %}
+
+                                        <li>
+                                            <a href="{% url 'configuration:BestPerformerTeamListView' %}"
+                                            >
+                                                Best Performer Team
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'BestPerformerOrganizationListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:BestPerformerOrganizationListView' %}"
+                                            >
+                                                Best Performer Org
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'BestPerformerPMListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:BestPerformerPMListView' %}"
+                                            >
+                                                Best Performer PM
+                                            </a>
+                                        </li>
+                                    {% elif dataurl == 'BestInnovatorTeamListView' %}
+                                        <li>
+                                            <a href="{% url 'configuration:BestInnovatorTeamListView' %}"
+                                            >
+                                                Best Innovator Team
+                                            </a>
+                                        </li>
+
+
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if modulename.module_type_id == 4 %}
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-plug"></i>
+                                <span>KPI</span></a>
+                            <ul class="dropdown-menu">
+                                {% for dataurl in data.urls %}
+                                    {% if dataurl == 'kpiPerformanceList' %}
+                                        <li><a class="nav-link" href="{% url 'kpimanagement:kpiPerformanceList' %}">KPI
+                                            ALl Employee</a></li>
+                                    {% elif dataurl == 'employee_assign' %}
+                                        <li><a class="nav-link" href="{% url "kpimanagement:employee_assign" %}">Employee
+                                            Assign</a></li>
+                                    {% elif dataurl == 'EmployKPIPerformanceList' %}
+                                        <li><a class="nav-link"
+                                               href="{% url "kpimanagement:EmployKPIPerformanceList" %}">KPI
+                                            Performance Form</a></li>
+                                    {% elif dataurl == 'assessment_details_update' %}
+                                        <li><a class="nav-link"
+                                               href="{% url "kpimanagement:assessment_details_update" %}">KPI Assessment
+                                            </a></li>
+                                    {% elif dataurl == 'assessmentReport' %}
+                                        <li><a class="nav-link" href="{% url 'kpimanagement:assessmentReport' %}">KPI Performer Assessment
+                                        </a></li>
+                                     {% elif dataurl == 'assessmentSupervisorList' %}
+                                        <li><a class="nav-link" href="{% url 'kpimanagement:assessmentSupervisorList' %}">Employee Assessment
+                                        </a></li>
+                                        {% elif dataurl == 'supervisorPerformanceList' %}
+                                        <li><a class="nav-link" href="{% url 'kpimanagement:supervisorPerformanceList' %}">Employee Performance
+                                        </a></li>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if modulename.module_type_id == 5 %}
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i>
+                                <span>Bill Management</span></a>
+                            <ul class="dropdown-menu">
+                                {% for dataurl in data.urls %}
+                                    {% if dataurl == 'billlist' %}
+                                        <li><a href="{% url "billmanagement:billlist" %}">Bill</a></li>
+                                    {% elif dataurl == 'billapprove' %}
+                                        <li><a class="nav-link" href="{% url "billmanagement:billapprove" %}">Bill
+                                            Approve</a></li>
+                                    {% elif dataurl == 'conveyancelist' %}
+                                        <li><a href="{% url "billmanagement:conveyancelist" %}">Conveyance</a></li>
+                                    {% elif dataurl == 'conveyanceapprove' %}
+                                        <li><a href="{% url "billmanagement:conveyanceapprove" %}">Conveyance
+                                            Approve</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if modulename.module_type_id == 6 %}
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i>
+                                <span>Requisition From</span></a>
+                            <ul class="dropdown-menu">
+                                {% for dataurl in data.urls %}
+                                    {% if dataurl == 'certificateRequestList' %}
+                                        <li><a class="nav-link"
+                                               href="{% url "requisitionfrom:certificateRequestList" %}">Salary
+                                            Certificate Request</a></li>
+                                    {% elif dataurl == 'CertificateRequestApprove' %}
+                                        <li><a class="nav-link"
+                                               href="{% url "requisitionfrom:CertificateRequestApprove" %}">Certificate
+                                            Approved</a></li>
+                                    {% elif dataurl == 'ResourceRequisitionList' %}
+                                        <li><a class="nav-link"
+                                               href="{% url "requisitionfrom:ResourceRequisitionList" %}">Resource
+                                            Requisition</a></li>
+                                    {% elif dataurl == 'NoObjectionCertificateList' %}
+                                        <li><a class="nav-link"
+                                               href="{% url "requisitionfrom:NoObjectionCertificateList" %}">No
+                                            Objection Certificate</a></li>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if modulename.module_type_id == 7 %}
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>Report</span></a>
+                            <ul class="dropdown-menu">
+                                {% for dataurl in data.urls %}
+                                    {% if dataurl == 'fullreportview' %}
+                                        <li><a class="nav-link" href="{% url "report:fullreportview" %}">Salary
+                                            Full Report </a></li>
+                                    {% elif dataurl == 'assessmentSbuWiseReport' %}
+                                        <li><a class="nav-link" href="{% url "report:assessmentSbuWiseReport" %}">Assessment
+                                            Report</a></li>
+                                    {% elif dataurl == 'pivotsummaryall' %}
+                                        <li><a class="nav-link" href="{% url "report:pivotsummaryall" %}">Salary
+                                            Pivot Summary</a></li>
+                                    {% elif dataurl == 'pivotsummaryinc' %}
+                                        <li><a class="nav-link" href="{% url "report:pivotsummaryinc" %}">Increment
+                                            Eligible</a></li>
+                                    {% elif dataurl == 'reportpdf' %}
+                                        <li><a class="nav-link" href="{% url "report:reportpdf" %}">Report</a></li>
+                                        {% elif dataurl == 'pivotsummaryinc' %}
+
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </aside>
+    </div>
+{% endblock content %}

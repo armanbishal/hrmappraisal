@@ -1,0 +1,1558 @@
+{% extends "base.html" %}
+{% block content %}
+    <style>
+        .kpiform_label {
+            color: #3A6B35;
+        }
+
+        .color_2 {
+            color: #bc5a45;
+        }
+
+        .color_3 {
+            color: #bc5a45;
+        }
+
+        h6 {
+            font-size: 15px;
+        }
+
+        {#614124  F9D923#}
+    </style>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{% url 'kpimanagement:supervisorPerformanceList' %}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>KPI Performance Form</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="#">KPI Performance Form</a></div>
+                </div>
+            </div>
+            {#==========================================#}
+            {#    NEW VERSION    #}
+            {#==========================================#}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-block alert-{% if message.level_tag == 'error' %}danger{% elif message.level_tag == 'success' %}success{% endif %} alert-dismissable"
+                         role="alert">
+                        {% if 'safe' in message.tags %}
+                            {{ message|safe }}
+                        {% else %}
+                            {{ message }}
+                        {% endif %}
+                        {{ messages.messages }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+{#            <div class="d-flex justify-content-end mb-3">#}
+{#                <button class="btn btn-dark" id="download"><i class="fas fa-download text-white"></i> Download</button>#}
+{#            </div>#}
+            <form method="POST" id="kpi_info">
+                {% csrf_token %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        {# NAME AND DESIGNATION #}
+                        <div class="row d-flex justify-content-between align-items-center">
+                            <div class="col-md-6">
+                                <div style="display: flex;">
+                                    <label class="" for="basic-default-name"><h4 class="mb-0"><b>Name:</b>
+                                    </h4>
+                                    </label>
+                                    <h4 class="mb-0"> &nbsp {{ kpi_performance_obj.employee.name }}</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="display: flex;">
+                                    <label for="basic-default-designation"><h4 class="mb-0">
+                                        <b>Designation: </b>
+                                    </h4></label>
+                                    <h4 class="mb-0"> &nbsp {{ kpi_performance_obj.employee.designation }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# Objective and Review of Results Start#}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="color_2"><b>OBJECTIVES SET FOR YEAR {{ year }}</b></h5>
+                                <br>
+                                <h6 class="kpiform_label">Please write SMART Objective statements
+                                    :</h6>
+                                <p class="kpiform_label" style="max-width: 80%">
+                                    Streching, Measurable, Agreed, Realistic, Time-Bound<br>
+                                    Mark PRIMARY objectives, to which a higher weighting will be
+                                    given,with a * % .
+                                </p>
+
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="color_2"><b>REVIEW OF RESULTS ACHIEVED</b></h5>
+                                <br>
+                                <h6 class="kpiform_label">Ratings: </h6>
+                                <p class="kpiform_label">
+                                    1. Exceeded <br>
+                                    2. Achieved all aspects <br>
+                                    3. Achieved the essnential requirements <br>
+                                    4. Did not achieve <br>
+                                </p>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# PRODUCTION Start #}
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group color_3">
+                                    <h6 class="color_3 mb-3" style="letter-spacing: -0.8px"><b> 1. PRODUCTION (Product/
+                                        Project) </b> <span style="font-size: 14px">(Cost,
+                                    revenue, quality,
+                                    quantity): </span>
+                                    </h6>
+                                    {% if kpi_performance_obj.flag == True %}
+                                        {% if form.production.value != None %}
+                                            <textarea name="{{ form.production.html_name }}"
+                                                      id="{{ form.production.id_for_label }}"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                            >{{ form.production.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.production.html_name }}"
+                                                      id="{{ form.production.id_for_label }}"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                            ></textarea>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.production.value != None %}
+                                            <textarea name="{{ form.production.html_name }}"
+                                                      id="{{ form.production.id_for_label }}"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                            >{{ form.production.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.production.html_name }}"
+                                                      id="{{ form.production.id_for_label }}"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                            > </textarea>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group color_3">
+                                    <h6 class="color_3 mb-3">
+                                        <b>Weightage: </b>
+                                    </h6>
+                                    {% if kpi_performance_obj.flag == True %}
+                                        {% if form.production_weightage.value != None %}
+                                            <input name="{{ form.production_weightage.html_name }}"
+                                                   id="{{ form.production_weightage.id_for_label }}"
+                                                   type="text" class="form-control"
+                                                   value="{{ form.production_weightage.value }}"
+                                                   placeholder="Enter Weightage"
+                                                   readonly/>
+                                        {% else %}
+                                            <input name="{{ form.production_weightage.html_name }}"
+                                                   id="{{ form.production_weightage.id_for_label }}"
+                                                   type="text" class="form-control"
+                                                   value=""
+                                                   placeholder="Enter Weightage"
+                                                   readonly/>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.production_weightage.value != None %}
+                                            <input name="{{ form.production_weightage.html_name }}"
+                                                   id="{{ form.production_weightage.id_for_label }}"
+                                                   type="text" class="form-control"
+                                                   value="{{ form.production_weightage.value }}"
+                                                   placeholder="Enter Weightage"/>
+                                        {% else %}
+                                            <input name="{{ form.production_weightage.html_name }}"
+                                                   id="{{ form.production_weightage.id_for_label }}"
+                                                   type="text" class="form-control"
+                                                   value=""
+                                                   placeholder="Enter Weightage"/>
+                                        {% endif %}
+                                    {% endif %}
+
+
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="color_3 mb-3">
+                                    <b>Rating: </b>
+                                </h6>
+                                <div class="mb-3">
+                                    <div class="form-group">
+                                        {% if kpi_performance_obj.flag == True %}
+                                            <select class="form-control select2"
+                                                    name="{{ form.production_rating.html_name }}"
+                                                    id="{{ form.production_rating.id_for_label }}"
+                                                    value="{{ form.production_rating.value }}">
+                                                {% for widget in form.production_rating.subwidgets %}
+                                                    <option value="{{ i.id }}"> {{ widget }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        {% else %}
+                                            <select name="{{ form.production_rating.html_name }}"
+                                                    id="{{ form.production_rating.id_for_label }}"
+                                                    value="{{ form.production_rating.value }}"
+                                                    class="form-control select2">
+                                                {% for widget in form.production_rating.subwidgets %}
+                                                    <option value="{{ i.id }}"> {{ widget }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# SUPPORT #}
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <h6 class="color_3 mb-3">
+                                        <b>2. SUPPORT</b>
+                                        <span style="font-size: 14px">
+                                        (Service, problem resolution, customer perception, business risk & reputation ):
+                                    </span>
+                                    </h6>
+                                    {% if kpi_performance_obj.flag == True %}
+                                        {% if form.support.value != None %}
+                                            <textarea name="{{ form.support.html_name }}"
+                                                      id="{{ form.support.id_for_label }}"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      readonly>{{ form.support.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.support.html_name }}"
+                                                      id="{{ form.support.id_for_label }}"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                            ></textarea>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.support.value != None %}
+                                            <textarea name="{{ form.support.html_name }}"
+                                                      id="{{ form.support.id_for_label }}"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                            >{{ form.support.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.support.html_name }}"
+                                                      id="{{ form.support.id_for_label }}"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                            ></textarea>
+                                        {% endif %}
+                                    {% endif %}
+                                    <div class="mt-3">
+                                        <h6 class="color_3">
+                                            <b>Weightage: </b>
+                                        </h6>
+                                        <div>
+                                            {% if kpi_performance_obj.flag == True %}
+                                                {% if form.support_weightage.value != None %}
+                                                    <input name="{{ form.support_weightage.html_name }}"
+                                                           id="{{ form.support_weightage.id_for_label }}"
+                                                           type="text" class="form-control"
+                                                           value="{{ form.support_weightage.value }}"
+                                                           placeholder="Enter Weightage"
+                                                           readonly/>
+                                                {% else %}
+                                                    <input name="{{ form.support_weightage.html_name }}"
+                                                           id="{{ form.support_weightage.id_for_label }}"
+                                                           type="text" class="form-control"
+                                                           value=""
+                                                           placeholder="Enter Weightage"
+                                                           readonly/>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if form.support_weightage.value != None %}
+                                                    <input name="{{ form.support_weightage.html_name }}"
+                                                           id="{{ form.support_weightage.id_for_label }}"
+                                                           type="text" class="form-control"
+                                                           value="{{ form.support_weightage.value }}"
+                                                           placeholder="Enter Weightage"/>
+                                                {% else %}
+                                                    <input name="{{ form.support_weightage.html_name }}"
+                                                           id="{{ form.support_weightage.id_for_label }}"
+                                                           type="text" class="form-control"
+                                                           value=""
+                                                           placeholder="Enter Weightage"/>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="mb-4 color_3">
+                                    <b>Rating: </b>
+                                </h6>
+                                <div class="mt-0">
+                                    {% if kpi_performance_obj.flag == True %}
+                                        <div class="form-group">
+                                            <select name="{{ form.support_rating.html_name }}"
+                                                    id="{{ form.support_rating.id_for_label }}"
+                                                    value="{{ form.support_rating.value }}"
+                                                    class="form-control select2"
+                                            {% for widget in form.support_rating.subwidgets %}
+                                                <option value='{{ widget.id }}'>{{ widget }} </option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <select name="{{ form.support_rating.html_name }}"
+                                                    id="{{ form.support_rating.id_for_label }}"
+                                                    value="{{ form.support_rating.value }}"
+                                                    class="form-control select2"
+                                            {% for widget in form.support_rating.subwidgets %}
+                                                <option value='{{ widget.id }}'>{{ widget }} </option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# INNOVATION #}
+                        <div class="row">
+                            <div class="col-6">
+                                <h6 class="color_3">
+                                    <b>3. INNOVATION</b> <span style="font-size: 14px"> (New ideas and
+                                implementation): </span>
+                                </h6>
+                                {% if kpi_performance_obj.flag == True %}
+                                    {% if form.innovation.value != None %}
+                                        <textarea name="{{ form.innovation.html_name }}"
+                                                  id="{{ form.innovation.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                        >{{ form.innovation.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.innovation.html_name }}"
+                                                  id="{{ form.innovation.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                        ></textarea>
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.innovation.value != None %}
+                                        <textarea name="{{ form.innovation.html_name }}"
+                                                  id="{{ form.innovation.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                        >{{ form.innovation.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.innovation.html_name }}"
+                                                  id="{{ form.innovation.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                        ></textarea>
+                                    {% endif %}
+                                {% endif %}
+                                <br>
+                                <div class="mb-3">
+                                    <h6 class="color_3">
+                                        <b>Weightage: </b>
+                                    </h6>
+                                    {% if kpi_performance_obj.flag == True %}
+                                        {% if form.innovation_weightage.value != None %}
+                                            <input name="{{ form.innovation_weightage.html_name }}"
+                                                   id="{{ form.innovation_weightage.id_for_label }}"
+                                                   type="text" class="form-control"
+                                                   value="{{ form.innovation_weightage.value }}"
+                                                   placeholder="Enter Weightage"
+                                                   readonly/>
+                                        {% else %}
+                                            <input name="{{ form.innovation_weightage.html_name }}"
+                                                   id="{{ form.innovation_weightage.id_for_label }}"
+                                                   type="text" class="form-control"
+                                                   value=""
+                                                   placeholder="Enter Weightage"
+                                                   readonly/>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.innovation_weightage.value != None %}
+                                            <input name="{{ form.innovation_weightage.html_name }}"
+                                                   id="{{ form.innovation_weightage.id_for_label }}"
+                                                   type="text" class="form-control"
+                                                   value="{{ form.innovation_weightage.value }}"
+                                                   placeholder="Enter Weightage"/>
+                                        {% else %}
+                                            <input name="{{ form.innovation_weightage.html_name }}"
+                                                   id="{{ form.innovation_weightage.id_for_label }}"
+                                                   type="text" class="form-control"
+                                                   value=""
+                                                   placeholder="Enter Weightage"/>
+                                        {% endif %}
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+                            <div class="col-6">
+                                <h6 class="mb color_3">
+                                    <b>Rating: </b>
+                                </h6>
+                                <div class="mb-3">
+                                    {% if kpi_performance_obj.flag == True %}
+                                        <div class="form-group">
+                                            <select name="{{ form.innovation_rating.html_name }}"
+                                                    id="{{ form.innovation_rating.id_for_label }}"
+                                                    value="{{ form.innovation_rating.value }}"
+                                                    class="form-control select2">
+                                                {% for widget in form.innovation_rating.subwidgets %}
+                                                    <option>{{ widget }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <select name="{{ form.innovation_rating.html_name }}"
+                                                    id="{{ form.innovation_rating.id_for_label }}"
+                                                    value="{{ form.innovation_rating.value }}"
+                                                    class="form-control select2">
+                                                {% for widget in form.innovation_rating.subwidgets %}
+                                                    <option>{{ widget }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# People #}
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <div class="">
+                                        <div>
+                                            <h6 class="color_3">
+                                                <b>4. PEOPLE</b> <span style="font-size: 14px"> (Leadership, management, training):</span>
+                                            </h6>
+                                            {% if kpi_performance_obj.flag == True %}
+                                                {% if form.people.value != None %}
+                                                    <textarea name="{{ form.people.html_name }}"
+                                                              id="{{ form.people.id_for_label }}"
+                                                              cols="30"
+                                                              rows="5" type="text"
+                                                              class="form-control"
+                                                              placeholder="Input Text"
+                                                              style="resize: none"
+                                                              readonly>{{ form.people.value }}</textarea>
+                                                {% else %}
+                                                    <textarea name="{{ form.people.html_name }}"
+                                                              id="{{ form.people.id_for_label }}"
+                                                              cols="30"
+                                                              rows="5" type="text"
+                                                              class="form-control"
+                                                              placeholder="Input Text"
+                                                              style="resize: none"
+                                                              readonly></textarea>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if form.people.value != None %}
+                                                    <textarea name="{{ form.people.html_name }}"
+                                                              id="{{ form.people.id_for_label }}"
+                                                              cols="30"
+                                                              rows="5" type="text"
+                                                              class="form-control"
+                                                              placeholder="Input Text"
+                                                              style="resize: none">{{ form.people.value }}</textarea>
+                                                {% else %}
+                                                    <textarea name="{{ form.people.html_name }}"
+                                                              id="{{ form.people.id_for_label }}"
+                                                              cols="30"
+                                                              rows="5" type="text"
+                                                              class="form-control"
+                                                              placeholder="Input Text"
+                                                              style="resize: none"></textarea>
+                                                {% endif %}
+                                            {% endif %}
+                                            <br>
+                                            <div class="mb-3">
+                                                <h6 class="color_3">
+                                                    <b>Weightage: </b>
+                                                </h6>
+                                                <div class="">
+                                                    {% if kpi_performance_obj.flag == True %}
+                                                        {% if form.people_weightage.value != None %}
+                                                            <input name="{{ form.people_weightage.html_name }}"
+                                                                   id="{{ form.people_weightage.id_for_label }}"
+                                                                   type="text" class="form-control"
+                                                                   value="{{ form.people_weightage.value }}"
+                                                                   placeholder="Enter Weightage"
+                                                                   readonly/>
+                                                        {% else %}
+                                                            <input name="{{ form.people_weightage.html_name }}"
+                                                                   id="{{ form.people_weightage.id_for_label }}"
+                                                                   type="text" class="form-control"
+                                                                   value=""
+                                                                   placeholder="Enter Weightage"
+                                                                   readonly/>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        {% if form.people_weightage.value != None %}
+                                                            <input name="{{ form.people_weightage.html_name }}"
+                                                                   id="{{ form.people_weightage.id_for_label }}"
+                                                                   type="text" class="form-control"
+                                                                   value="{{ form.people_weightage.value }}"
+                                                                   placeholder="Enter Weightage"/>
+                                                        {% else %}
+                                                            <input name="{{ form.people_weightage.html_name }}"
+                                                                   id="{{ form.people_weightage.id_for_label }}"
+                                                                   type="text" class="form-control"
+                                                                   value=""
+                                                                   placeholder="Enter Weightage"/>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <div class="">
+                                        <label for="basic-default-rating"><h6 class="mb color_3">
+                                            <b>Rating: </b></h6>
+                                        </label>
+                                        <div class="mb-3">
+                                            {% if kpi_performance_obj.flag == True %}
+                                                <div class="form-group">
+                                                    <select name="{{ form.people_rating.html_name }}"
+                                                            id="{{ form.people_rating.id_for_label }}"
+                                                            value="{{ form.people_rating.value }}"
+                                                            class="form-control select2">
+                                                        {% for widget in form.people_rating.subwidgets %}
+                                                            <option>   {{ widget }}</option>
+                                                        {% endfor %}
+
+                                                    </select>
+                                                </div>
+                                            {% else %}
+                                                <div class="form-group">
+                                                    <select name="{{ form.people_rating.html_name }}"
+                                                            id="{{ form.people_rating.id_for_label }}"
+                                                            value="{{ form.people_rating.value }}"
+                                                            class="form-control select2">
+                                                        {% for widget in form.people_rating.subwidgets %}
+                                                            <option>   {{ widget }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# OTHER  #}
+                        <div class="row">
+                            <div class="col-6">
+                                <br>
+                                <div class="mb-3">
+                                    <div>
+                                        <h6 class="color_3">
+                                            <b>5. OTHER</b> <span style="font-size: 14px"> (Learning &
+                                            development): </span>
+                                        </h6>
+                                        {% if kpi_performance_obj.flag == True %}
+                                            {% if form.other.value != None %}
+                                                <textarea name="{{ form.other.html_name }}"
+                                                          id="{{ form.other.id_for_label }}"
+                                                          cols="30"
+                                                          rows="5"
+                                                          class="form-control"
+                                                          placeholder="Input Text"
+                                                >{{ form.other.value }}</textarea>
+                                            {% else %}
+                                                <textarea name="{{ form.other.html_name }}"
+                                                          id="{{ form.other.id_for_label }}"
+                                                          cols="30"
+                                                          rows="5"
+                                                          class="form-control"
+                                                          placeholder="Input Text"
+                                                ></textarea>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if form.other.value != None %}
+                                                <textarea name="{{ form.other.html_name }}"
+                                                          id="{{ form.other.id_for_label }}"
+                                                          cols="30"
+                                                          rows="5"
+                                                          class="form-control"
+                                                          placeholder="Input Text"> {{ form.other.value }}</textarea>
+                                            {% else %}
+                                                <textarea name="{{ form.other.html_name }}"
+                                                          id="{{ form.other.id_for_label }}"
+                                                          cols="30"
+                                                          rows="5"
+                                                          class="form-control"
+                                                          placeholder="Input Text"
+                                                ></textarea>
+                                            {% endif %}
+                                        {% endif %}
+                                        <br>
+                                        <div class="mb-3">
+                                            <h6 class="color_3">
+                                                <b>Weightage: </b>
+                                            </h6>
+                                            <div class="">
+                                                {% if kpi_performance_obj.flag == True %}
+                                                    {% if form.other_weightage.value != None %}
+                                                        <input name="{{ form.other_weightage.html_name }}"
+                                                               id="{{ form.other_weightage.id_for_label }}"
+                                                               type="text" class="form-control"
+                                                               value="{{ form.other_weightage.value }}"
+                                                               placeholder="Enter Weightage"
+                                                               readonly/>
+                                                    {% else %}
+                                                        <input name="{{ form.other_weightage.html_name }}"
+                                                               id="{{ form.other_weightage.id_for_label }}"
+                                                               type="text" class="form-control"
+                                                               value=""
+                                                               placeholder="Enter Weightage"
+                                                               readonly/>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if form.other_weightage.value != None %}
+                                                        <input name="{{ form.other_weightage.html_name }}"
+                                                               id="{{ form.other_weightage.id_for_label }}"
+                                                               type="text" class="form-control"
+                                                               value="{{ form.other_weightage.value }}"
+                                                               placeholder="Enter Weightage"/>
+                                                    {% else %}
+                                                        <input name="{{ form.other_weightage.html_name }}"
+                                                               id="{{ form.other_weightage.id_for_label }}"
+                                                               type="text" class="form-control"
+                                                               value=""
+                                                               placeholder="Enter Weightage"/>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <br>
+                                <div class="mb-3">
+                                    <h6 class="mb color_3">
+                                        <b>Rating: </b>
+                                    </h6>
+                                    <div class="mb-3">
+                                        {% if kpi_performance_obj.flag == True %}
+                                            <div class="form-group">
+                                                <select name="{{ form.other_rating.html_name }}"
+                                                        id="{{ form.other_rating.id_for_label }}"
+                                                        value="{{ form.other_rating.value }}"
+                                                        class="form-control select2">
+                                                    {% for widget in form.other_rating.subwidgets %}
+                                                        <option>{{ widget }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% else %}
+                                            <div class="form-group">
+                                                <select name="{{ form.other_rating.html_name }}"
+                                                        id="{{ form.other_rating.id_for_label }}"
+                                                        value="{{ form.other_rating.value }}"
+                                                        class="form-control select2">
+                                                    {% for widget in form.other_rating.subwidgets %}
+                                                        <option>{{ widget }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# VALUE RATINGS #}
+                        <div class="row">
+                            <div class="col-6">
+                                <h6 class="mb color_2"><b>VALUE RATINGS</b></h6>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="color_2"><b>REVIEW OF RESULTS ACHIEVED</b></h6>
+                                <p class="kpiform_label">
+                                    A. Role Model <br>
+                                    B. Very Good <br>
+                                    C. Good <br>
+                                    D. Improvement Required <br>
+                                    E. Unacceptable <br>
+                                </p>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# COURAGEOUS  #}
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <h6 class="color_3">
+                                        <b>1. COURAGEOUS</b>
+                                        <span style="font-size: 14px">
+                                            (Moral Strength: faith and belief in oneself, self confidence):
+                                        </span>
+                                    </h6>
+                                    {% if kpi_performance_obj.flag == True %}
+                                        {% if form.courageous.value != None %}
+                                            <textarea name="{{ form.courageous.html_name }}"
+                                                      id="{{ form.courageous.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"
+                                                      readonly>{{ form.courageous.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.courageous.html_name }}"
+                                                      id="{{ form.courageous.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"
+                                                      readonly></textarea>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.courageous.value != None %}
+                                            <textarea name="{{ form.courageous.html_name }}"
+                                                      id="{{ form.courageous.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none">{{ form.courageous.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.courageous.html_name }}"
+                                                      id="{{ form.courageous.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"></textarea>
+                                        {% endif %}
+                                    {% endif %}
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="mb-4 color_3"><b>Rating: </b></h6>
+                                <div class="">
+                                    <div class="mb-3">
+                                        {% if kpi_performance_obj.flag == True %}
+                                            <div class="form-group">
+                                                <select name="{{ form.courageous_rating.html_name }}"
+                                                        id="{{ form.courageous_rating.id_for_label }}"
+                                                        value="{{ form.courageous_rating.value }}"
+                                                        class="form-control select2">
+                                                    {% for widget in form.courageous_rating.subwidgets %}
+                                                        <option>{{ widget }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% else %}
+                                            <div class="form-group">
+                                                <select
+                                                        name="{{ form.courageous_rating.html_name }}"
+                                                        id="{{ form.courageous_rating.id_for_label }}"
+                                                        value="{{ form.courageous_rating.value }}"
+                                                        class="form-control select2"
+                                                >
+                                                    {% for widget in form.courageous_rating.subwidgets %}
+                                                        <option>{{ widget }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# TEAMWORK  #}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="color_3">
+                                    <b>2. TEAMWORK</b> <span style="font-size: 14px"> (Team player, not
+                                        exclusive:
+                                        Enjoy
+                                        sharing and collaborating with relevent
+                                        parties): </span>
+                                </h6>
+                                {% if kpi_performance_obj.flag == True %}
+                                    {% if form.teamwork.value != None %}
+                                        <textarea name="{{ form.teamwork.html_name }}"
+                                                  id="{{ form.teamwork.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly>{{ form.teamwork.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.teamwork.html_name }}"
+                                                  id="{{ form.teamwork.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly></textarea>
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.teamwork.value != None %}
+                                        <textarea name="{{ form.teamwork.html_name }}"
+                                                  id="{{ form.teamwork.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none">{{ form.teamwork.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.teamwork.html_name }}"
+                                                  id="{{ form.teamwork.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"></textarea>
+                                    {% endif %}
+                                {% endif %}
+                                <br>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="mb color_3"><b>Rating: </b></h6>
+                                <div class="mb-3">
+                                    {% if kpi_performance_obj.flag == True %}
+                                        <div class="form-group">
+                                            <select name="{{ form.teamwork_rating.html_name }}"
+                                                    id="{{ form.teamwork_rating.id_for_label }}"
+                                                    value="{{ form.teamwork_rating.value }}"
+                                                    class="form-control select2">
+                                                {% for widget in form.courageous_rating.subwidgets %}
+                                                    <option>{{ widget }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    {% else %}
+                                        <div class="form-group">
+                                            <select name="{{ form.teamwork_rating.html_name }}"
+                                                    id="{{ form.teamwork_rating.id_for_label }}"
+                                                    value="{{ form.teamwork_rating.value }}"
+                                                    class="form-control select2">
+                                                {% for widget in form.courageous_rating.subwidgets %}
+                                                    <option>{{ widget }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        {# RESPONSIVE  #}
+                    <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="color_3">
+                                    <b>3. RESPONSIVE</b> <span style="font-size: 14px">(Attentive, Interactive :
+                                    consider everyone inside & outside as customer ;
+                                    stakeholder) :</span>
+                                </h6>
+                                {% if kpi_performance_obj.flag == True %}
+                                    {% if form.responsive.value != None %}
+                                        <textarea name="{{ form.responsive.html_name }}"
+                                                  id="{{ form.responsive.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly>{{ form.responsive.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.responsive.html_name }}"
+                                                  id="{{ form.responsive.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly></textarea>
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.responsive.value != None %}
+                                        <textarea name="{{ form.responsive.html_name }}"
+                                                  id="{{ form.responsive.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none">{{ form.responsive.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.responsive.html_name }}"
+                                                  id="{{ form.responsive.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"></textarea>
+                                    {% endif %}
+                                {% endif %}
+                                <br>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="mb-3 color_3"><b>Rating: </b></h6>
+                                <div class="mb-3">
+                                    {% if kpi_performance_obj.flag == True %}
+                                        <div class="form-group">
+                                            <select name="{{ form.responsive_rating.html_name }}"
+                                                    id="{{ form.responsive_rating.id_for_label }}"
+                                                    value="{{ form.responsive_rating.value }}"
+                                                    class="form-control select2"
+                                            >
+                                                {% for widget in form.courageous_rating.subwidgets %}
+                                                    <option>{{ widget }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group">
+                                        <select name="{{ form.responsive_rating.html_name }}"
+                                                id="{{ form.responsive_rating.id_for_label }}"
+                                                value="{{ form.responsive_rating.value }}"
+                                                class="form-control select2">
+                                            {% for widget in form.courageous_rating.subwidgets %}
+                                                <option>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                            <hr/>
+
+                            {# CREATIVE #}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="color_3">
+                                        <b>4. CREATIVE</b> <span style="font-size: 14px"> (Business minds: Translates imagination into business):</span>
+                                    </h6>
+                                    {% if kpi_performance_obj.flag == True %}
+                                        {% if form.creative.value != None %}
+                                            <textarea name="{{ form.creative.html_name }}"
+                                                      id="{{ form.creative.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5"
+                                                      type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"
+                                                      readonly>{{ form.creative.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.creative.html_name }}"
+                                                      id="{{ form.creative.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"
+                                                      readonly></textarea>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.creative.value != None %}
+                                            <textarea name="{{ form.creative.html_name }}"
+                                                      id="{{ form.creative.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none">{{ form.creative.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.creative.html_name }}"
+                                                      id="{{ form.creative.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"></textarea>
+                                        {% endif %}
+                                    {% endif %}
+                                    <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb color_3"><b>Rating: </b></h6>
+                                    <div class="mb-3">
+                                        {% if kpi_performance_obj.flag == True %}
+                                            <div class="form-group">
+                                                <select name="{{ form.creative_rating.html_name }}"
+                                                        id="{{ form.creative_rating.id_for_label }}"
+                                                        value="{{ form.creative_rating.value }}"
+                                                        class="form-control select2">
+                                                    {% for widget in form.courageous_rating.subwidgets %}
+                                                        <option>{{ widget }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% else %}
+                                            <div class="form-group">
+                                                <select name="{{ form.creative_rating.html_name }}"
+                                                        id="{{ form.creative_rating.id_for_label }}"
+                                                        value="{{ form.creative_rating.value }}"
+                                                        class="form-control select2">
+                                                    {% for widget in form.courageous_rating.subwidgets %}
+                                                        <option>{{ widget }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+
+                            {# TRUSTWORTHY   #}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="color_3">
+                                        <b>5. TRUSTWORTHY</b> (Deserving of trust ,
+                                        confidence
+                                        , reliable, dependable):
+                                    </h6>
+                                    {% if kpi_performance_obj.flag == True %}
+                                        {% if form.trustworthy.value != None %}
+                                            <textarea name="{{ form.trustworthy.html_name }}"
+                                                      id="{{ form.trustworthy.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"
+                                                      readonly>{{ form.trustworthy.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.trustworthy.html_name }}"
+                                                      id="{{ form.trustworthy.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"
+                                                      readonly></textarea>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.trustworthy.value != None %}
+                                            <textarea name="{{ form.trustworthy.html_name }}"
+                                                      id="{{ form.trustworthy.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none">{{ form.trustworthy.value }}</textarea>
+                                        {% else %}
+                                            <textarea name="{{ form.trustworthy.html_name }}"
+                                                      id="{{ form.trustworthy.id_for_label }}"
+                                                      cols="30"
+                                                      rows="5" type="text"
+                                                      class="form-control"
+                                                      placeholder="Input Text"
+                                                      style="resize: none"></textarea>
+                                        {% endif %}
+                                    {% endif %}
+
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb color_3"><b>Rating: </b></h6>
+                                    <div class="mb-3">
+                                        {% if kpi_performance_obj.flag == True %}
+                                            <div class="form-group">
+                                                <select name="{{ form.trustworthy_rating.html_name }}"
+                                                        id="{{ form.trustworthy_rating.id_for_label }}"
+                                                        value="{{ form.trustworthy_rating.value }}"
+                                                        class="form-control select2">
+                                                    {% for widget in form.courageous_rating.subwidgets %}
+                                                        <option>{{ widget }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% else %}
+                                            <div class="form-group">
+                                                <select name="{{ form.trustworthy_rating.html_name }}"
+                                                        id="{{ form.trustworthy_rating.id_for_label }}"
+                                                        value="{{ form.trustworthy_rating.value }}"
+                                                        class="form-control select2">
+                                                    {% for widget in form.courageous_rating.subwidgets %}
+                                                        <option>{{ widget }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+
+                            {# SIGNATURE TO OBJECTIVES  #}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h6 class="color_3">
+                                        <b>SIGNATURE TO OBJECTIVES: </b>
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="card-body" style="text-align: center;">
+                                                <br>
+                                                <br>
+                                                <p>_____________________________________________</p>
+                                                <label for="">Individual Manager Function or SBU
+                                                    Head</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card-body" style="text-align: center;">
+                                                <br>
+                                                <br>
+                                                <p>_________________________</p>
+                                                <label for="">Manager</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body bg-white">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <h6 class="color_3">
+                                    <label for=""><b>OTHER SUBSTANTIAL ACHIEVEMENTS
+                                        :</b></label>
+                                </h6>
+                                {% if kpi_performance_obj.flag == True %}
+                                    {% if form.other_sustainable_achievement.value != None %}
+                                        <textarea name="{{ form.other_sustainable_achievement.html_name }}"
+                                                  id="{{ form.other_sustainable_achievement.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly>{{ form.other_sustainable_achievement.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.other_sustainable_achievement.html_name }}"
+                                                  id="{{ form.other_sustainable_achievement.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly></textarea>
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.other_sustainable_achievement.value != None %}
+                                        <textarea name="{{ form.other_sustainable_achievement.html_name }}"
+                                                  id="{{ form.other_sustainable_achievement.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none">{{ form.other_sustainable_achievement.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.other_sustainable_achievement.html_name }}"
+                                                  id="{{ form.other_sustainable_achievement.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"></textarea>
+                                    {% endif %}
+                                {% endif %}
+                                <br>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <h6 class="color_3">
+                                    <label for=""><b>SIGNIFICANT ISSUES :</b></label>
+                                </h6>
+                                {% if kpi_performance_obj.flag == True %}
+                                    {% if form.significant_issue.value != None %}
+                                        <textarea name="{{ form.significant_issue.html_name }}"
+                                                  id="{{ form.significant_issue.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly>{{ form.significant_issue.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.significant_issue.html_name }}"
+                                                  id="{{ form.significant_issue.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly></textarea>
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.significant_issue.value != None %}
+                                        <textarea name="{{ form.significant_issue.html_name }}"
+                                                  id="{{ form.significant_issue.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none">{{ form.significant_issue.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.significant_issue.html_name }}"
+                                                  id="{{ form.significant_issue.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"></textarea>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <h6 class="color_3">
+                                    <label for=""><b>INDIVIDUAL'S COMMENTS :</b></label>
+                                </h6>
+                                {% if kpi_performance_obj.flag == True %}
+                                    {% if form.individual_comment.value != None %}
+                                        <textarea name="{{ form.individual_comment.html_name }}"
+                                                  id="{{ form.individual_comment.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly>{{ form.individual_comment.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.individual_comment.html_name }}"
+                                                  id="{{ form.individual_comment.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly></textarea>
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.individual_comment.value != None %}
+                                        <textarea name="{{ form.individual_comment.html_name }}"
+                                                  id="{{ form.individual_comment.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none">{{ form.individual_comment.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.individual_comment.html_name }}"
+                                                  id="{{ form.individual_comment.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"></textarea>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <h6 class="color_3">
+                                    <label for=""><b>MANAGERS COMMENTS :</b></label> <br>
+                                </h6>
+                                {% if kpi_performance_obj.flag == True %}
+                                    {% if form.manager_comment.value != None %}
+                                        <textarea name="{{ form.manager_comment.html_name }}"
+                                                  id="{{ form.manager_comment.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly>{{ form.manager_comment.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.manager_comment.html_name }}"
+                                                  id="{{ form.manager_comment.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly></textarea>
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.manager_comment.value != None %}
+                                        <textarea name="{{ form.manager_comment.html_name }}"
+                                                  id="{{ form.manager_comment.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none">{{ form.manager_comment.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.manager_comment.html_name }}"
+                                                  id="{{ form.manager_comment.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"></textarea>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <h6 class="color_3">
+                                            <label for=""><b>SENIOR MANAGER / FUNCTIONAL HEAD'S COMMENTS
+                                                :</b></label>
+                                        </h6>
+                                        {% if kpi_performance_obj.flag == True %}
+                                            {% if form.senior_manager_functional_head_comment.value != None %}
+                                                <textarea
+                                                        name="{{ form.senior_manager_functional_head_comment.html_name }}"
+                                                        id="{{ form.senior_manager_functional_head_comment.id_for_label }}"
+                                                        cols="30"
+                                                        rows="5" type="text"
+                                                        class="form-control"
+                                                        placeholder="Input Text"
+                                                        style="resize: none"
+                                                        readonly>{{ form.senior_manager_functional_head_comment.value }}</textarea>
+                                            {% else %}
+                                                <textarea
+                                                        name="{{ form.senior_manager_functional_head_comment.html_name }}"
+                                                        id="{{ form.senior_manager_functional_head_comment.id_for_label }}"
+                                                        cols="30"
+                                                        rows="5" type="text"
+                                                        class="form-control"
+                                                        placeholder="Input Text"
+                                                        style="resize: none"
+                                                        readonly></textarea>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if form.senior_manager_functional_head_comment.value != None %}
+                                                <textarea
+                                                        name="{{ form.senior_manager_functional_head_comment.html_name }}"
+                                                        id="{{ form.senior_manager_functional_head_comment.id_for_label }}"
+                                                        cols="30"
+                                                        rows="5" type="text"
+                                                        class="form-control"
+                                                        placeholder="Input Text"
+                                                        style="resize: none">{{ form.senior_manager_functional_head_comment.value }}</textarea>
+                                            {% else %}
+                                                <textarea
+                                                        name="{{ form.senior_manager_functional_head_comment.html_name }}"
+                                                        id="{{ form.senior_manager_functional_head_comment.id_for_label }}"
+                                                        cols="30"
+                                                        rows="5" type="text"
+                                                        class="form-control"
+                                                        placeholder="Input Text"
+                                                        style="resize: none"></textarea>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h6 class="color_3">
+                                            <label for=""><b>DIRECTOR AND CHIEF OPERATING OFFICER'S
+                                                COMMENTS
+                                                :</b></label>
+                                        </h6>
+                                        {% if kpi_performance_obj.flag == True %}
+                                            {% if form.director_chief_operating_officer_comment.value != None %}
+                                                <textarea
+                                                        name="{{ form.director_chief_operating_officer_comment.html_name }}"
+                                                        id="{{ form.director_chief_operating_officer_comment.id_for_label }}"
+                                                        cols="30"
+                                                        rows="5" type="text"
+                                                        class="form-control"
+                                                        placeholder="Input Text"
+                                                        style="resize: none"
+                                                        readonly>{{ form.director_chief_operating_officer_comment.value }}</textarea>
+                                            {% else %}
+                                                <textarea
+                                                        name="{{ form.director_chief_operating_officer_comment.html_name }}"
+                                                        id="{{ form.director_chief_operating_officer_comment.id_for_label }}"
+                                                        cols="30"
+                                                        rows="5" type="text"
+                                                        class="form-control"
+                                                        placeholder="Input Text"
+                                                        style="resize: none"
+                                                        readonly></textarea>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if form.director_chief_operating_officer_comment.value != None %}
+                                                <textarea
+                                                        name="{{ form.director_chief_operating_officer_comment.html_name }}"
+                                                        id="{{ form.director_chief_operating_officer_comment.id_for_label }}"
+                                                        cols="30"
+                                                        rows="5" type="text"
+                                                        class="form-control"
+                                                        placeholder="Input Text"
+                                                        style="resize: none">{{ form.director_chief_operating_officer_comment.value }}</textarea>
+                                            {% else %}
+                                                <textarea
+                                                        name="{{ form.director_chief_operating_officer_comment.html_name }}"
+                                                        id="{{ form.director_chief_operating_officer_comment.id_for_label }}"
+                                                        cols="30"
+                                                        rows="5" type="text"
+                                                        class="form-control"
+                                                        placeholder="Input Text"
+                                                        style="resize: none"></textarea>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <h6 class="color_3">
+                                    <label for=""><b>OVERALL PERFORMANCE BASED ON ALL OF THE
+                                        ABOVE
+                                        RATING :</b></label>
+                                </h6>
+                                {% if kpi_performance_obj.flag == True %}
+                                    {% if form.overall_performance.value != None %}
+                                        <textarea name="{{ form.overall_performance.html_name }}"
+                                                  id="{{ form.overall_performance.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly>{{ form.overall_performance.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.overall_performance.html_name }}"
+                                                  id="{{ form.overall_performance.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"
+                                                  readonly></textarea>
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.overall_performance.value != None %}
+                                        <textarea name="{{ form.overall_performance.html_name }}"
+                                                  id="{{ form.overall_performance.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none">{{ form.overall_performance.value }}</textarea>
+                                    {% else %}
+                                        <textarea name="{{ form.overall_performance.html_name }}"
+                                                  id="{{ form.overall_performance.id_for_label }}"
+                                                  cols="30"
+                                                  rows="5" type="text"
+                                                  class="form-control"
+                                                  placeholder="Input Text"
+                                                  style="resize: none"></textarea>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <h6 class="color_3">
+                                    <label for=""><b>SIGNATURES TO ASSESSMENT :</b></label>
+                                </h6>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="card-body" style="text-align: center;">
+                                            <br>
+                                            <br>
+                                            <p>__________________________________</p>
+                                            <label for="">Individual Manager Function or SBU
+                                                Head</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card-body" style="text-align: center;">
+                                            <br>
+                                            <br>
+                                            <p>_________________________</p>
+                                            <label for="">Manager</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card-body" style="text-align: center;">
+                                            <br>
+                                            <br>
+                                            <p>_________________________</p>
+                                            <label for="">Senior</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="" style="text-align: right">
+                                    {% if kpi_performance_obj.flag != True %}
+                                        <button name="draft_save" type="submit" class="btn btn-primary me-3">
+                                            <i class="fa-solid fa-cloud-arrow-up fg-xl"></i>&nbsp
+                                            Draft
+                                            Save
+                                        </button>
+                                        <button name="submit" type="submit" class="btn btn-primary me-3">
+                                            <i class="fa-solid fa-floppy-disk fg-xl"></i>&nbsp
+                                            Submit
+                                        </button>
+                                        <a href="/kpi/kpiobjective/">
+                                            <button type="button" class="btn btn-outline-secondary">
+                                                <i class="fa-solid fa-circle-xmark fg-xl"></i>&nbsp
+                                                Cancel
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        window.onload = function () {
+            document.getElementById('download').addEventListener('click', () => {
+                const kpi = this.document.getElementById('kpi_info');
+                html2pdf().from(kpi).save();
+            })
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,481 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <script>
+        function enableButton() {
+            var selectelem = document.getElementById('sbuddl');
+            var btnelem = document.getElementById('sbu-search');
+            btnelem.disabled = !selectelem.value;
+        }
+    </script>
+
+    <style>
+        .dropdown-width {
+            min-width: 300px;
+        }
+
+        #showcase {
+            display: block;
+        }
+
+        body {
+            counter-reset: Serial; /* Set the Serial counter to 0 */
+        }
+
+        tr td:first-child:before {
+            counter-increment: Serial; /* Increment the Serial counter */
+            content: counter(Serial); /* Display the counter */
+        }
+
+        .table-borderless > thead > tr > th {
+            border: none;
+        }
+
+        .table-sticky table {
+            border-spacing: 0;
+        }
+
+        .table-sticky th {
+            position: sticky;
+            top: 0;
+            border: 1px solid #bbbbbb;
+        }
+
+        .table-sticky td {
+            border: 1px solid #bbbbbb;
+        }
+
+        .table-sticky th:nth-child(1),
+        .table-sticky td:nth-child(1) {
+            width: 30px;
+            min-width: 30px;
+            position: sticky;
+            left: 0px;
+        }
+
+        .table-sticky td:nth-child(1) {
+            background: white;
+        }
+
+        .table-sticky th:nth-child(1) {
+            z-index: 2;
+        }
+
+        .show-entry {
+            margin-top: 5px;
+        }
+
+        .search-box {
+            margin-left: auto;
+            margin-top: 5px;
+        }
+
+        .num-entries {
+            margin-top: 5px;
+        }
+
+        .pagination-box {
+            margin-left: auto;
+            margin-top: 5px;
+        }
+
+        label {
+            font-weight: 700;
+        }
+    </style>
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="#" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>Assessment Details</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="#">Assessment Details</a></div>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4></h4>
+                            </div>
+
+                            <div class="card-body">
+                                {% for msg in messages %}
+                                    <div class="alert alert-success alert-dismissible" role="alert">
+                                        {{ msg }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                        </button>
+                                    </div>
+                                {% endfor %}
+
+                                <form action="" method="post"
+                                      enctype="multipart/form-data"
+                                      id="sbu-search-form" autocomplete="off" name="search" value="searchForm">
+                                    {% csrf_token %}
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">SBU</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <select name="sbu" id="sbuddl" class="form-control selectric">
+                                                {% for i in sbu_list %}
+                                                    <option value="{{ i.name }}">{{ i.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <button name="sbu-search" id="sbu-search" type="submit"
+                                                    class="btn btn-primary">Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <hr/>
+                                {% if sbu_flag == 1 %}
+                                    <h4 class=" text-center mt-4 mb-3"> Employee Lists <b>{% if sbu_search %}({{ sbu_search }} ){% endif %}</b>
+                                    </h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered" id="table-1">
+                                            <thead>
+                                            <tr>
+                                                <th style="display:none"></th>
+                                                <th>Input</th>
+                                                <th>Status</th>
+                                                <th>ID No</th>
+                                                <th>Employee Name</th>
+                                                <th>Designation</th>
+                                                <th>Date of joining</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for data in assessment_details %}
+                                                <tr class="text-nowrap">
+                                                    <td style="display:none"></td>
+                                                    <td class="">
+                                                        <a class="btn btn-sm btn-primary" href="{% url 'kpimanagement:assessment_details_update_single' data.id %}">
+                                                            <i class="fas fa-plus text-white"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td style="font-weight: 700">
+                                                        {% if data.flag == 1 %}
+                                                            <span class="text-success">Complete</span>
+                                                        {% else %}
+                                                            <span class="text-primary">In Progress</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td id="likdodf" scope="row">{{ data.employee.employee_id }}</td>
+                                                    <input type="hidden" name="getEmID" value="{{ data.employee.employee_id }}"/>
+                                                    <td>{{ data.employee.name }}</td>
+                                                    <td>{{ data.employee.designation }}</td>
+                                                    <td id="date1">{{ data.employee.date_of_joining }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+        </section>
+
+    </div>
+
+
+    {#    <script>#}
+    {#        function setEmployeeId(data) {#}
+    {#            alert(data)#}
+    {#            document.getElementById('employee-name').innerHTML = data#}
+    {#            console.log(data)#}
+    {#        }#}
+    {##}
+    {#    </script>#}
+
+{% endblock %}
+
+
+
+
+{#<th style="color: white; background-color: #5f6e7f">KPI Objective {{ current_year }}</th>#}
+{#<th style="color: white; background-color: #5f6e7f">KPI Value {{ current_year }}</th>#}
+{#<th style="color: white; background-color: #5f6e7f">HR Rating {{ current_year }}</th>#}
+{#<th style="color: white; background-color: #5f6e7f">KPI {{ current_year }} Overall</th>#}
+{#<th style="color: white; background-color: #5f6e7f">Criticality {{ current_year }}</th>#}
+{#<th style="color: white; background-color: #5f6e7f">Potential for Improvement {{ current_year }}</th>#}
+{#<th style="color: white; background-color: #5f6e7f">Technical/Implementation/Operational {{ current_year }}</th>#}
+{#<th style="color: white; background-color: #5f6e7f">Top/Average/Bottom Performer {{ current_year }}</th>#}
+{#<th style="color: white; background-color: #5f6e7f">#}
+{#  Best performer inside team {{ current_year }}<br />#}
+{#  (Pick only one person in your team)#}
+{#</th>#}
+{#<th style="color: white; background-color: #5f6e7f">#}
+{#  Best innovator inside team {{ current_year }}<br />#}
+{#  (Pick only one person in your team)#}
+{#</th>#}
+{#<th style="color: white; background-color: #5f6e7f">Proposed Designation {{ current_year }}</th>#}
+{#<th style="color: white; background-color: #5f6e7f">Remarks {{ current_year }}</th>#}
+
+
+{#<td class="dropdown-width">#}
+{#                            {% if data.kpi_objective != None %}#}
+{#                                <select name="{{ form.kpi_objective.html_name }}"#}
+{#                                        id="{{ form.kpi_objective.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in kpi_objective_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.kpi_objective %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.kpi_objective.html_name }}"#}
+{#                                        id="{{ form.kpi_objective.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.kpi_objective %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.kpi_value != None %}#}
+{#                                <select name="{{ form.kpi_value.html_name }}"#}
+{#                                        id="{{ form.kpi_value.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in kpi_value_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.kpi_value %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.kpi_value.html_name }}"#}
+{#                                        id="{{ form.kpi_value.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.kpi_value %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.hr_rating != None %}#}
+{#                                <select name="{{ form.hr_rating.html_name }}"#}
+{#                                        id="{{ form.hr_rating.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in hr_rating_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.hr_rating %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.hr_rating.html_name }}"#}
+{#                                        id="{{ form.hr_rating.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.hr_rating %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.kpi_overall != None %}#}
+{#                                {{ data.kpi_overall }}#}
+{#                            {% else %}#}
+{##}
+{#                            {% endif %}#}
+{##}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.criticality != None %}#}
+{#                                <select name="{{ form.criticality.html_name }}"#}
+{#                                        id="{{ form.criticality.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in criticality_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.criticality %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.criticality.html_name }}"#}
+{#                                        id="{{ form.criticality.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.criticality %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.potential_for_improvement != None %}#}
+{#                                <select name="{{ form.potential_for_improvement.html_name }}"#}
+{#                                        id="{{ form.potential_for_improvement.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in potential_for_improvement_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.potential_for_improvement %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.potential_for_improvement.html_name }}"#}
+{#                                        id="{{ form.potential_for_improvement.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.potential_for_improvement %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.technical_implementation_operational != None %}#}
+{#                                <select name="{{ form.technical_implementation_operational.html_name }}"#}
+{#                                        id="{{ form.technical_implementation_operational.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in technical_implementation_operational_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.technical_implementation_operational %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.technical_implementation_operational.html_name }}"#}
+{#                                        id="{{ form.technical_implementation_operational.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.technical_implementation_operational %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.top_average_bottom_performer != None %}#}
+{#                                <select name="{{ form.top_average_bottom_performer.html_name }}"#}
+{#                                        id="{{ form.top_average_bottom_performer.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in top_average_bottom_performer_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.top_average_bottom_performer %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.top_average_bottom_performer.html_name }}"#}
+{#                                        id="{{ form.top_average_bottom_performer.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.top_average_bottom_performer %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.best_performer_team != None %}#}
+{#                                <select name="{{ form.best_performer_team.html_name }}"#}
+{#                                        id="{{ form.best_performer_team.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in best_performer_team_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.best_performer_team %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.best_performer_team.html_name }}"#}
+{#                                        id="{{ form.best_performer_team.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.best_performer_team %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.best_innovator_team != None %}#}
+{#                                <select name="{{ form.best_innovator_team.html_name }}"#}
+{#                                        id="{{ form.best_innovator_team.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in best_innovator_team_obj %}#}
+{#                                        <option value="{{ widget.id }}"#}
+{#                                                {% if widget == data.best_innovator_team %}#}
+{#                                                selected{% endif %}>{{ widget }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% else %}#}
+{#                                <select name="{{ form.best_innovator_team.html_name }}"#}
+{#                                        id="{{ form.best_innovator_team.id_for_label }}"#}
+{#                                        value=""#}
+{#                                        class="select2 form-select">#}
+{#                                    {% for widget in form.best_innovator_team %}#}
+{#                                        {{ widget }}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.proposed_designation != None %}#}
+{#                                <input#}
+{#                                        class="form-control"#}
+{#                                        type="text"#}
+{#                                        id="{{ form.proposed_designation.id_for_label }}"#}
+{#                                        name="{{ form.proposed_designation.html_name }}"#}
+{#                                        value="{{ data.proposed_designation }}"#}
+{#                                        placeholder="Proposed Designation"#}
+{#                                />#}
+{#                            {% else %}#}
+{#                                <input#}
+{#                                        class="form-control"#}
+{#                                        type="text"#}
+{#                                        id="{{ form.proposed_designation.id_for_label }}"#}
+{#                                        name="{{ form.proposed_designation.html_name }}"#}
+{#                                        value=""#}
+{#                                        placeholder="Proposed Designation"#}
+{#                                />#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="dropdown-width">#}
+{#                            {% if data.remarks != None %}#}
+{#                                <textarea name="{{ form.remarks.html_name }}"#}
+{#                                          cols="30"#}
+{#                                          rows="1" type="text" class="form-control"#}
+{#                                          id="{{ form.remarks.id_for_label }}"#}
+{#                                          style="resize: none"#}
+{#                                          placeholder="Remarks">{{ data.remarks }}</textarea>#}
+{#                            {% else %}#}
+{#                                <textarea name="{{ form.remarks.html_name }}"#}
+{#                                          cols="30"#}
+{#                                          rows="1" type="text" class="form-control"#}
+{#                                          id="{{ form.remarks.id_for_label }}"#}
+{#                                          style="resize: none"#}
+{#                                          placeholder="Remarks"></textarea>#}
+{#                            {% endif %}#}
+{#                        </td>#}

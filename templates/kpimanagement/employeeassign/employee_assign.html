@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <script>
+        $(document).ready(function () {
+            var $sbuvar = $("#sbuddl");
+            $employeevar = $("#employeeddl");
+            $options = $employeevar.find('option');
+            $sbuvar.on('change', function () {
+                $employeevar.html($options.filter('[value="' + this.value + '"]'));
+            }).trigger('change');
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#employeeddl").select2({
+                placeholder: '   ---------',
+                allowClear: true,
+                dropdownPosition: 'below',
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#supervisorddl").select2({
+                placeholder: '   ---------',
+                allowClear: true,
+                minimumResultsForSearch: Infinity,
+            });
+        });
+    </script>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="#" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>Employee Assign</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="#">Employee Assign</a></div>
+                </div>
+            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-block alert-{% if message.level_tag == 'error' %}danger{% elif message.level_tag == 'success' %}success{% endif %} alert-dismissable"
+                         role="alert">
+                        {% if 'safe' in message.tags %}
+                            {{ message|safe }}
+                        {% else %}
+                            {{ message }}
+                        {% endif %}
+                        {{ messages.messages }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form action="{% url 'kpimanagement:EmployeeAssignSupervisorUpdate' %}" method="post"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4></h4>
+                                </div>
+                                <div class="card-body">
+                                    <form action="" method="post" enctype="multipart/form-data"
+                                          id="validate-form" autocomplete="off">
+                                        {% csrf_token %}
+                                        <div class="form-group row mb-4">
+                                            <label for="id_subsbu"
+                                                   class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sub</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <select id="sbuddl" name="sbu" class="form-control selectric">
+                                                    <option>-----Select----</option>
+                                                    {% for sbudata in sbu %}
+                                                        <option value="{{ sbudata.id }}">{{ sbudata.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label for="id_employee"
+                                                   class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Employee</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <select id="employeeddl" name="employee" class="form-control select2"
+                                                        multiple>
+
+                                                    {% for employeedata in employee %}
+                                                        <option selected
+                                                                value="{{ employeedata.sbu_id }}">{{ employeedata.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label for="id_employee"
+                                                   class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Employee
+                                                Supervisor</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <select id="supervisorddl" name="supervisor"
+                                                        class="form-control select2"
+                                                        multiple>
+                                                    {% for supervisordata in supervisor %}
+                                                        <option value="{{ supervisordata.id }}">{{ supervisordata.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label for="id_employee"
+                                                   class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Start
+                                                Date</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <input type="date" name='duration_startdate' placeholder='Date'
+                                                       class="form-control" required/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label for="id_employee"
+                                                   class="col-form-label text-md-right col-12 col-md-3 col-lg-3">End
+                                                Date</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <input type="date" name='duration_enddate' placeholder='Date'
+                                                       class="form-control" required/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+
+{% endblock %}

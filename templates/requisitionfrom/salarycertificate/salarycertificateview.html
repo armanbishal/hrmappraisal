@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+    <style>
+        body {
+            background: rgb(204, 204, 204);
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+        }
+
+        page[size="A4"] {
+            width: 21cm;
+            height: 29.7cm;
+        }
+
+    </style>
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <h1>Invoice</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item">Invoice</div>
+                </div>
+            </div>
+            <page size="A4">
+                <div class="section-body">
+                    <div class="invoice">
+                        <div class="invoice-print">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="invoice-title">
+                                        <h2></h2>
+                                        <div class="invoice-number"></div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h6>Ref no: DS/HR/ Salary /20221008</h6>
+                                            <h6>Date: September 22, 2022</h6>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br>
+                            <div id="example-div" class="d-flex aligns-items-center justify-content-center">
+                                <h4>TO WHOM IT MAY CONCERN</h4>
+                            </div>
+                            <br>
+                            <div>
+                                <p class="lead">This is to certify that
+                                    <Name> (Employee ID: DS00…) has been under permanent employment working in this
+                                        organization as
+                                        <Deg> from
+                                            <Date> to till now
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="card-body lead">
+                                    <label>His/her Salary structure per month is as follows:</label>
+
+                                    <div class="col-md-6 offset-md-3">
+                                        Gross Salary &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+                                    <div class="col-md-6 offset-md-3">
+                                        Mobile Allowance &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+                                    <div class="col-md-6 offset-md-3">
+                                        Other Allowance &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+                                    <div class="col-md-6 offset-md-3">
+                                        PFS Allowance &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+                                    <div class="col-md-6 offset-md-3">
+                                        Project Allowance &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+                                    <P class="text-center">-----------------------------------------</P>
+                                    <p class="text-center">Total &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                                        Tk. 000.00 </p>
+                                </div>
+
+                                <div class="card-body lead">
+                                    <label>Less: Deductions:</label>
+
+                                    <div class="col-md-6 offset-md-3">
+                                        Provident Fund &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+                                    <div class="col-md-6 offset-md-3">
+                                        AIT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+
+                                    <P class="text-center">-----------------------------------------</P>
+                                    <p class="text-center">Net pay Salary &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                                        Tk. 000.00 </p>
+                                    <p>In word: </p>
+                                </div>
+                                <div class="card-body lead">
+
+                                    <div class="col-md-6 offset-md-3">
+                                        Salary paid by Bank Asia Limited &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+                                    <div class="col-md-6 offset-md-3">
+                                        Salary paid by Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Tk.000.00
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </page>
+        </section>
+    </div>
+
+{% endblock %}

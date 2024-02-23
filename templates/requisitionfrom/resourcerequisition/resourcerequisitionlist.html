@@ -1,0 +1,613 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+
+                <h1>Resource Requisition List</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="buttons">
+                        <a href="#" class="btn btn-primary">Certificate
+                            Request</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-block alert-{% if message.level_tag == 'error' %}danger{% elif message.level_tag == 'success' %}success{% endif %} alert-dismissable"
+                                 role="alert">
+                                {% if 'safe' in message.tags %}
+                                    {{ message|safe }}
+                                {% else %}
+                                    {{ message }}
+                                {% endif %}
+                                {{ messages.messages }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h4></h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="stepwizard">
+                                    <div class="stepwizard-row setup-panel">
+                                        <div class="stepwizard-step col-xs-3">
+                                            <a href="#step-1" type="button" class="btn btn-success btn-circle">1</a>
+                                            <p><small>Approval</small></p>
+                                        </div>
+                                        <div class="stepwizard-step col-xs-3">
+                                            <a href="#step-2" type="button" class="btn btn-default btn-circle"
+                                               disabled="disabled">2</a>
+                                            <p><small>Reason for Recruitment</small></p>
+                                        </div>
+                                        <div class="stepwizard-step col-xs-3">
+                                            <a href="#step-3" type="button" class="btn btn-default btn-circle"
+                                               disabled="disabled">3</a>
+                                            <p><small>Reason for Recruitment</small></p>
+                                        </div>
+                                        <div class="stepwizard-step col-xs-3">
+                                            <a href="#step-4" type="button" class="btn btn-default btn-circle"
+                                               disabled="disabled">4</a>
+                                            <p><small>Skills and Experience</small></p>
+                                        </div>
+                                        <div class="stepwizard-step col-xs-3">
+                                            <a href="#step-5" type="button" class="btn btn-default btn-circle"
+                                               disabled="disabled">5</a>
+                                            <p><small>Current Skill Matrix </small></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <form role="form">
+                                    <div class="panel panel-primary setup-content" id="step-1">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class='form-group'>
+                                                        <label>Comment & Signature
+                                                            of Unit Head:
+                                                        </label>
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class='form-group'>
+                                                        <label>Comment & Signature
+                                                            of SBU Director:
+                                                        </label>
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class='form-group'>
+                                                        <label>Comment & Signature
+                                                            of Director Finance:
+
+                                                        </label>
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class='form-group'>
+                                                        <label>Comment & Signature
+                                                            of Chief Executive Officer:
+
+                                                        </label>
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class='form-group'>
+                                                        <label>Comments
+                                                            (Head of HR):
+                                                        </label>
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Select2</label>
+                                                        <select class="form-control select2">
+                                                            <option>Option 1</option>
+                                                            <option>Option 2</option>
+                                                            <option>Option 3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Select2</label>
+                                                        <select class="form-control select2">
+                                                            <option>Option 1</option>
+                                                            <option>Option 2</option>
+                                                            <option>Option 3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Select2</label>
+                                                        <select class="form-control select2">
+                                                            <option>Option 1</option>
+                                                            <option>Option 2</option>
+                                                            <option>Option 3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Select2</label>
+                                                        <select class="form-control select2">
+                                                            <option>Option 1</option>
+                                                            <option>Option 2</option>
+                                                            <option>Option 3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Select2</label>
+                                                        <select class="form-control select2">
+                                                            <option>Option 1</option>
+                                                            <option>Option 2</option>
+                                                            <option>Option 3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Select2</label>
+                                                        <input type="number" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary nextBtn pull-right mt-4" type="button">Next
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-primary setup-content" id="step-2">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-md">
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>No of Resource</th>
+                                                    <th>Salary Range</th>
+                                                    <th>Source of Fund</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check text-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   id="inlineCheckbox1" value="option1">
+                                                            <br>
+                                                            <label class="form-check-label"
+                                                                   for="inlineCheckbox1">New Recruit</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="exampleRadios" id="exampleRadios1" checked>
+                                                                <label class="form-check-label" for="exampleRadios1">
+                                                                    Fresh Graduate
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="exampleRadios" id="exampleRadios2" checked>
+                                                                <label class="form-check-label" for="exampleRadios2">
+                                                                    Experienced (If yes mention number of years)
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control"/>
+                                                    </td>
+                                                    <td><input type="text" class="form-control"/></td>
+                                                    <td><input type="text" class="form-control"/></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check text-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   id="inlineCheckbox2" value="option1">
+                                                            <br>
+                                                            <label class="form-check-label"
+                                                                   for="inlineCheckbox2">Replacement</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="exampleRadios" id="exampleRadios3" checked>
+                                                                <label class="form-check-label" for="exampleRadios3">
+                                                                    Resignation
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="exampleRadios" id="exampleRadios4" checked>
+                                                                <label class="form-check-label" for="exampleRadios4">
+                                                                    Transfer
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control"/>
+                                                    </td>
+                                                    <td><input type="text" class="form-control"/></td>
+                                                    <td><input type="text" class="form-control"/></td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check text-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   id="inlineCheckbox3" value="option1">
+                                                            <br>
+                                                            <label class="form-check-label"
+                                                                   for="inlineCheckbox3">R & D </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="exampleRadios" id="exampleRadios5" checked>
+                                                                <label class="form-check-label" for="exampleRadios5">
+                                                                    Internal Fund
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="exampleRadios" id="exampleRadios6" checked>
+                                                                <label class="form-check-label" for="exampleRadios6">
+                                                                    External Fund (If external then mention fund source)
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control"/>
+                                                    </td>
+                                                    <td><input type="text" class="form-control"/></td>
+                                                    <td><input type="text" class="form-control"/></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <button class="btn btn-primary nextBtn pull-right mt-4" type="button">Next
+                                        </button>
+                                    </div>
+
+
+                                    <div class="panel panel-primary setup-content" id="step-3">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-md">
+                                                <tr>
+                                                    <th>Project Invoice Amount (a)</th>
+                                                    <th>Of Resources involved (b)</th>
+                                                    <th>Total Resource Costing (c = b X total salaries)</th>
+                                                    <th>Project Duration (d)</th>
+                                                    <th>Project Cost (e = c x d)</th>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                    <td><input type="number" class="form-control"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>Cost-Benefit Analysis (a-e) =</td>
+                                                    <td>1200</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-md-6 border">
+                                                <div class='form-group'>
+                                                    Are mentioned skillset resources available in a non-revenue earning
+                                                    Project? If yes, please mention it.
+                                                    <br>
+                                                    <br>
+                                                    Are mentioned skillset resources in sister concern? If yes, please
+                                                    mention it.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 border">
+                                                <div class='form-group'>
+                                                    Are mentioned skillset resources available in another SBU/Sub SBU?
+                                                    If yes, please mention it.
+                                                    <br>
+                                                    <br>
+                                                    Should we go for hire or not?
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <button class="btn btn-primary nextBtn pull-right mt-4" type="button">Next
+                                        </button>
+                                    </div>
+
+                                    <div class="panel panel-primary setup-content" id="step-4">
+
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                           name="exampleRadios" id="exampleRadios7" checked>
+                                                    <label class="form-check-label" for="exampleRadios7">
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                                <br>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                           name="exampleRadios" id="exampleRadios8" checked>
+                                                    <label class="form-check-label" for="exampleRadios8">No (if yes
+                                                        mention the number of years ……………)
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-md">
+                                                        <thead>
+                                                        <tr>
+                                                            <th colspan="2" class="text-center">Required skills:</th>
+
+                                                        </tr>
+
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td class="text-center">a. Minimum Skills</td>
+                                                            <td class="text-center">b. Project special/Required skills
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><textarea class="form-control"></textarea></td>
+                                                            <td><textarea class="form-control"></textarea></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <div class='form-group'>
+                                                    <p class="text-danger"> Note: Above this part Need to Fill-up by
+                                                        Requisition request by, Verified by HR and Finance.</p>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-success pull-right" type="submit">Finish!</button>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-primary setup-content" id="step-5">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-md">
+                                                    <tr>
+                                                        <th>Sl</th>
+                                                        <th>Employee Name</th>
+                                                        <th>Designation</th>
+                                                        <th>ID No</th>
+                                                        <th>SBU</th>
+                                                        <th>Sub SBU/project</th>
+                                                        <th>Allocated Hour</th>
+                                                        <th>Common</th>
+                                                        <th>Skill</th>
+                                                        <th>Project Revenue</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                        <td><input type="text" class="form-control"/></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="row ">
+
+                                                <div class="col-md-6">
+                                                    <div class='form-group'>
+                                                        <label>Brief Work Details</label>
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class='form-group'>
+                                                        <label>Plan after Completion of Project</label>
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <div class='form-group'>
+                                                    <p class="text-danger"> Note: Above this part Need to Fill-up by
+                                                        Requisition request by, Verified by HR</p>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-success pull-right" type="submit">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <style>
+        body {
+            margin-top: 30px;
+        }
+
+        .stepwizard-step p {
+            margin-top: 0px;
+            color: #666;
+        }
+
+        .stepwizard-row {
+            display: table-row;
+        }
+
+        .stepwizard {
+            display: table;
+            width: 100%;
+            position: relative;
+        }
+
+        .stepwizard-step button[disabled] {
+            /*opacity: 1 !important;
+            filter: alpha(opacity=100) !important;*/
+        }
+
+        .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+            opacity: 1 !important;
+            color: #bbb;
+        }
+
+        .stepwizard-row:before {
+            top: 14px;
+            bottom: 0;
+            position: absolute;
+            content: " ";
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            z-index: 0;
+        }
+
+        .stepwizard-step {
+            display: table-cell;
+            text-align: center;
+            position: relative;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            padding: 6px 0;
+            font-size: 12px;
+            line-height: 1.428571429;
+            border-radius: 15px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+
+            var navListItems = $('div.setup-panel div a'),
+                allWells = $('.setup-content'),
+                allNextBtn = $('.nextBtn');
+
+            allWells.hide();
+
+            navListItems.click(function (e) {
+                e.preventDefault();
+                var $target = $($(this).attr('href')),
+                    $item = $(this);
+
+                if (!$item.hasClass('disabled')) {
+                    navListItems.removeClass('btn-success').addClass('btn-default');
+                    $item.addClass('btn-success');
+                    allWells.hide();
+                    $target.show();
+                    $target.find('input:eq(0)').focus();
+                }
+            });
+
+            allNextBtn.click(function () {
+                var curStep = $(this).closest(".setup-content"),
+                    curStepBtn = curStep.attr("id"),
+                    nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                    curInputs = curStep.find("input[type='text'],input[type='url']"),
+                    isValid = true;
+
+                $(".form-group").removeClass("has-error");
+                for (var i = 0; i < curInputs.length; i++) {
+                    if (!curInputs[i].validity.valid) {
+                        isValid = false;
+                        $(curInputs[i]).closest(".form-group").addClass("has-error");
+                    }
+                }
+
+                if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
+            });
+
+            $('div.setup-panel div a.btn-success').trigger('click');
+        });
+    </script>
+{% endblock content %}

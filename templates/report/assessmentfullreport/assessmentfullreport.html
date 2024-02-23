@@ -1,0 +1,921 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <script>
+        function enableButton() {
+            var selectelem = document.getElementById('sbuddl');
+            var btnelem = document.getElementById('sbu-search');
+            btnelem.disabled = !selectelem.value;
+        }
+    </script>
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="#" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>Assessment Full Report</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="#">Assessment Full Report</a></div>
+                </div>
+            </div>
+            <div class="section-body">
+                <form action="" method="post"
+                      enctype="multipart/form-data"
+                      id="sbu-search-form" autocomplete="off" name="search" value="searchForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4></h4>
+                                </div>
+                                <div class="card-body">
+                                    {% for msg in messages %}
+                                        <div class="alert alert-success alert-dismissible" role="alert">
+                                            {{ msg }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    {% endfor %}
+
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">SBU</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <select name="sbu" id="sbuddl" class="form-control selectric">
+                                                {% for i in sbu_list %}
+                                                    <option value="{{ i.name }}">{{ i.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <button name="sbu-search" id="sbu-search" type="submit"
+                                                    class="btn btn-primary">Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {% if sbu_flag == 1 %}
+                                        <div id="showcase">
+                                            <div class="my-4 text-center">
+                                                <h3>Employee Lists <b id="searchDept"> {% if sbu_search %} ({{ sbu_search }}
+                                                    ){% endif %} </b></h3>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered" id="table-export">
+                                                    <thead>
+                                                    <tr class="text-nowrap" style="height: 60px">
+                                                        <th>Employee Name</th>
+                                                        <th>Designation</th>
+                                                        <th>ID No.</th>
+                                                        <th>DOJ</th>
+                                                        <th>Duration</th>
+                                                        <th>SBU</th>
+                                                        <th>Sub SBU</th>
+                                                        <th>PM Name</th>
+                                                        <th>SBU Director Name</th>
+                                                        <!-- Before Last Year -->
+                                                        <th>Effective Date</th>
+                                                        <th>Confirmation / Increment / No Increment {{ second_last_year }}</th>
+                                                        <th>Total Salary and Allowance {{ third_last_year }}</th>
+                                                        <th>Basic {{ third_last_year }}</th>
+                                                        <th>House Rent {{ third_last_year }}</th>
+                                                        <th>Medical Allowance {{ third_last_year }}</th>
+                                                        <th>Conveyance Allowance {{ third_last_year }}</th>
+                                                        <th>WPPF {{ third_last_year }}</th>
+                                                        <th>Special Bonus {{ third_last_year }}</th>
+                                                        <th>Mobile and Other Allowance {{ third_last_year }}</th>
+                                                        <th>Project Expense {{ third_last_year }}</th>
+                                                        <th>Other Benefits {{ third_last_year }}</th>
+                                                        <th>Gross Salary {{ third_last_year }}</th>
+                                                        <th>PF Com Contribution {{ third_last_year }}</th>
+                                                        <th>Grade Salary A {{ third_last_year }}</th>
+                                                        <th>Year of Assessment Duation {{ second_last_year }}</th>
+                                                        <th>KPI Objective {{ second_last_year }}</th>
+                                                        <th>KPI-Value {{ second_last_year }}</th>
+                                                        <th>KPI-HR {{ second_last_year }}</th>
+                                                        <th>KPI-Overall {{ second_last_year }}</th>
+                                                        <th>% of KPI-Objective {{ second_last_year }}</th>
+                                                        <th>% of KPI-Value {{ second_last_year }}</th>
+                                                        <th>% of KPI-HR {{ second_last_year }}</th>
+                                                        <th>Weighted Average of KPI % {{ second_last_year }}</th>
+                                                        <th>Criticality {{ second_last_year }}</th>
+                                                        <th>Potential for Improvement {{ second_last_year }}</th>
+                                                        <th>Technical/Implementation/Operational {{ second_last_year }}</th>
+                                                        <th>Top/Average/Bottom Performer {{ second_last_year }}</th>
+                                                        <th>Best performer inside team {{ second_last_year }}</th>
+                                                        <th>Best innovator inside team {{ second_last_year }}</th>
+                                                        <th>Best Performer in the organization {{ second_last_year }}</th>
+                                                        <th>Proposed Designation {{ second_last_year }}</th>
+                                                        <th>Best Performer among all PM {{ second_last_year }}</th>
+                                                        <th>Increment Amount (HR) {{ second_last_year }} (A)</th>
+                                                        <th>HR New Gross Salary {{ second_last_year }}} (A)</th>
+                                                        <th>HR % {{ second_last_year }}</th>
+                                                        <th>Fixed Increment (%) {{ second_last_year }} (B)</th>
+                                                        <th>Fixed Increment New Gross Salary B {{ second_last_year }} (B)</th>
+                                                        <th>Team Distribution (%) {{ second_last_year }}} (C)</th>
+                                                        <th>Difference = New salary A- New salary B {{ second_last_year }}</th>
+                                                        {# <th>#} {# Increment: {{ year.year }}#} {#</th> #}
+                                                        <th>Proposed By SBU Director/PM/Self {{ second_last_year }}</th>
+                                                        <th>% of Increment: {{ second_last_year }}</th>
+                                                        <th>New Gross Salary B {{ second_last_year }}</th>
+                                                        <th>CAGR 3 years {{ second_last_year }}</th>
+                                                        <th>Avarage 3 Years {{ second_last_year }}</th>
+                                                        <th>Average Actual {{ second_last_year }}</th>
+                                                        <th>KPI-Overall {{ second_last_year }}</th>
+                                                        <th>Weighted Average of KPI % {{ second_last_year }}</th>
+                                                        <th>Increment with KPI % {{ second_last_year }}</th>
+                                                        <th>New Gross Salary KPI % {{ second_last_year }}</th>
+                                                        <th>Gap Manual vs Formula {{ second_last_year }}</th>
+                                                        <th>Remarks {{ second_last_year }}</th>
+                                                        <th>Remarks 2 {{ second_last_year }}</th>
+                                                        <!-- Last Year -->
+                                                        <th>Effective Date</th>
+                                                        <th>Confirmation / Increment / No Increment {{ second_last_year }}</th>
+                                                        <th>Total Salary and Allowance {{ second_last_year }}</th>
+                                                        <th>Basic {{ second_last_year }}</th>
+                                                        <th>House Rent {{ second_last_year }}</th>
+                                                        <th>Medical Allowance {{ second_last_year }}</th>
+                                                        <th>Conveyance Allowance {{ second_last_year }}</th>
+                                                        <th>WPPF {{ second_last_year }}</th>
+                                                        <th>Special Bonus {{ second_last_year }}</th>
+                                                        <th>Mobile and Other Allowance {{ second_last_year }}</th>
+                                                        <th>Project Expense {{ second_last_year }}</th>
+                                                        <th>Other Benefits {{ second_last_year }}</th>
+                                                        <th>Gross Salary {{ second_last_year }}</th>
+                                                        <th>PF Com Contribution {{ second_last_year }}</th>
+                                                        <th>Grade Salary A {{ second_last_year }}</th>
+                                                        <th>Year of Assessment Duation {{ first_last_year }}</th>
+                                                        <th>KPI Objective {{ first_last_year }}</th>
+                                                        <th>KPI-Value {{ first_last_year }}</th>
+                                                        <th>KPI-HR {{ first_last_year }}</th>
+                                                        <th>KPI-Overall {{ first_last_year }}</th>
+                                                        <th>% of KPI-Objective {{ first_last_year }}</th>
+                                                        <th>% of KPI-Value {{ first_last_year }}</th>
+                                                        <th>% of KPI-HR {{ first_last_year }}</th>
+                                                        <th>Weighted Average of KPI % {{ first_last_year }}</th>
+                                                        <th>Criticality {{ first_last_year }}</th>
+                                                        <th>Potential for Improvement {{ first_last_year }}</th>
+                                                        <th>Technical/Implementation/Operational {{ first_last_year }}</th>
+                                                        <th>Top/Average/Bottom Performer {{ first_last_year }}</th>
+                                                        <th>Best performer inside team {{ first_last_year }}</th>
+                                                        <th>Best innovator inside team {{ first_last_year }}</th>
+                                                        <th>Best Performer in the organization {{ first_last_year }}</th>
+                                                        <th>Proposed Designation {{ first_last_year }}</th>
+                                                        <th>Best Performer among all PM {{ first_last_year }}</th>
+                                                        <th>Increment Amount (HR) {{ first_last_year }} (A)</th>
+                                                        <th>HR New Gross Salary {{ first_last_year }} (A)</th>
+                                                        <th>HR % {{ first_last_year }}</th>
+                                                        <th>Fixed Increment (%) {{ first_last_year }} (B)</th>
+                                                        <th>Fixed Increment New Gross Salary B {{ first_last_year }} (B)</th>
+                                                        <th>Team Distribution (%) {{ first_last_year }} (C)</th>
+                                                        <th>Difference = New salary A- New salary B {{ first_last_year }}</th>
+                                                        {# <th>#} {# Increment: {{ year.year }}#} {#</th> #}
+                                                        <th>Proposed By SBU Director/PM/Self {{ first_last_year }}</th>
+                                                        <th>% of Increment: {{ first_last_year }}</th>
+                                                        <th>New Gross Salary B {{ first_last_year }}</th>
+                                                        <th>CAGR 3 years {{ first_last_year }}</th>
+                                                        <th>Avarage 3 Years {{ first_last_year }}</th>
+                                                        <th>Average Actual {{ first_last_year }}</th>
+                                                        <th>KPI-Overall {{ first_last_year }}</th>
+                                                        <th>Weighted Average of KPI % {{ first_last_year }}</th>
+                                                        <th>Increment with KPI % {{ first_last_year }}</th>
+                                                        <th>New Gross Salary KPI % {{ first_last_year }}</th>
+                                                        <th>Gap Manual vs Formula {{ first_last_year }}</th>
+                                                        <th>Remarks {{ first_last_year }}</th>
+                                                        <th>Remarks 2 {{ first_last_year }}</th>
+                                                        <!-- Current -->
+                                                        <th>Effective Date</th>
+                                                        <th>Confirmation / Increment / No Increment {{ current_year }}</th>
+                                                        <th>Total Salary and Allowance {{ first_last_year }}</th>
+                                                        <th>Basic {{ first_last_year }}</th>
+                                                        <th>House Rent {{ first_last_year }}</th>
+                                                        <th>Medical Allowance {{ first_last_year }}</th>
+                                                        <th>Conveyance Allowance {{ first_last_year }}</th>
+                                                        <th>WPPF {{ first_last_year }}</th>
+                                                        <th>Special Bonus {{ first_last_year }}</th>
+                                                        <th>Mobile and Other Allowance {{ first_last_year }}</th>
+                                                        <th>Project Expense {{ first_last_year }}</th>
+                                                        <th>Other Benefits {{ first_last_year }}</th>
+                                                        <th>Gross Salary {{ first_last_year }}</th>
+                                                        <th>PF Com Contribution {{ first_last_year }}</th>
+                                                        <th>Grade Salary A {{ first_last_year }}</th>
+                                                        <th>Year of Assessment Duation {{ current_year }}</th>
+                                                        <th>KPI Objective {{ current_year }}</th>
+                                                        <th>KPI-Value {{ current_year }}</th>
+                                                        <th>KPI-HR {{ current_year }}</th>
+                                                        <th>KPI-Overall {{ current_year }}</th>
+                                                        <th>% of KPI-Objective {{ current_year }}</th>
+                                                        <th>% of KPI-Value {{ current_year }}</th>
+                                                        <th>% of KPI-HR {{ current_year }}</th>
+                                                        <th>Weighted Average of KPI % {{ current_year }}</th>
+                                                        <th>Criticality {{ current_year }}</th>
+                                                        <th>Potential for Improvement {{ current_year }}</th>
+                                                        <th>Technical/Implementation/Operational {{ current_year }}</th>
+                                                        <th>Top/Average/Bottom Performer {{ current_year }}</th>
+                                                        <th>Best performer inside team {{ current_year }}</th>
+                                                        <th>Best innovator inside team {{ current_year }}</th>
+                                                        <th>Best Performer in the organization {{ current_year }}</th>
+                                                        <th>Proposed Designation {{ current_year }}</th>
+                                                        <th>Best Performer among all PM {{ current_year }}</th>
+                                                        <th>Increment Amount (HR) {{ current_year }} (A)</th>
+                                                        <th>HR New Gross Salary {{ current_year }} (A)</th>
+                                                        <th>HR % {{ current_year }}</th>
+                                                        <th>Fixed Increment (%) {{ current_year }} (B)</th>
+                                                        <th>Fixed Increment New Gross Salary B {{ current_year }} (B)</th>
+                                                        <th>Team Distribution (%) {{ current_year }} (C)</th>
+                                                        <th>Difference = New salary A- New salary B {{ current_year }}</th>
+                                                        {# <th>#} {# Increment: {{ year.year }}#} {#</th> #}
+                                                        <th>Proposed By SBU Director/PM/Self {{ current_year }}</th>
+                                                        <th>% of Increment: {{ current_year }}</th>
+                                                        <th>New Gross Salary B {{ current_year }}</th>
+                                                        <th>CAGR 3 years {{ current_year }}</th>
+                                                        <th>Avarage 3 Years {{ current_year }}</th>
+                                                        <th>Average Actual {{ current_year }}</th>
+                                                        <th>KPI-Overall {{ current_year }}</th>
+                                                        <th>Weighted Average of KPI % {{ current_year }}</th>
+                                                        <th>Increment with KPI % {{ current_year }}</th>
+                                                        <th>New Gross Salary KPI % {{ current_year }}</th>
+                                                        <th>Gap Manual vs Formula {{ current_year }}</th>
+                                                        <th>Remarks {{ current_year }}</th>
+                                                        <th>Remarks 2 {{ current_year }}</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for key, data in dict.items %}
+                                                        <tr class="text-nowrap">
+                                                            {% for emp in data %}
+                                                                <td>{{ emp }}</td>
+                                                            {% endfor %}
+                                                            {# {% with data|length as l %}#} {# {% with 168|sub:l as b %}#} {# {% with ''|center:b as range %}#}
+                                                            {# {% for _ in range %}#} {# <td>&nbsp;</td> #} {# {% endfor %}#}
+                                                            {# {% endwith %}#} {# {% endwith %}#} {# {% endwith %}#}
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+    </div>
+
+    <script>
+        var deptName = document.getElementById('searchDept')
+        console.log(deptName.innerText)
+        $(document).ready(function () {
+            $('#table-export').DataTable({
+                dom: 'Bfrtipl',
+                buttons: [
+                    {extend: 'excel', title: 'Employee Lists ' + deptName.innerText, className: 'btn-primary'},
+                    {extend: 'pdf', title: 'Employee Lists ' + deptName.innerText, className: 'btn-primary'},
+                    {extend: 'print', title: 'Employee Lists ' + deptName.innerText, className: 'btn-primary'},
+                    {#'excel', 'pdf', 'print'#}
+                ]
+            })
+        })
+    </script>
+{% endblock %}
+
+{# <div class="table-responsive text-nowrap tableFixHead table-sticky"#}
+{#                                                >#}
+{#                                                    <table class="table table-striped table-bordered table-hover table-borderless"#}
+{#                                                           id="tableddl">#}
+{#                                                        <thead>#}
+{#                                                        <tr class="text-nowrap" style="height: 60px;">#}
+{#                                                            <th class="header"#}
+{#                                                                style="color: white ;background-color: cadetblue">SL#}
+{#                                                            </th>#}
+{#                                                            <th class="header"#}
+{#                                                                style="color: white ;background-color: #686256">#}
+{#                                                                Employee#}
+{#                                                                Name#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Designation#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f"> ID#}
+{#                                                                No.#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">DOJ#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                Duration#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                SBU#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">Sub#}
+{#                                                                SBU#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">PM#}
+{#                                                                Name#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #5f6e7f">SBU#}
+{#                                                                Director Name#}
+{#                                                            </th>#}
+{#                                                            <!-- Before Last Year -->#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Effective Date#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Confirmation / Increment / No#}
+{#                                                                Increment {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Total#}
+{#                                                                Salary#}
+{#                                                                and Allowance {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Basic {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                House Rent {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Medical#}
+{#                                                                Allowance {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Conveyance#}
+{#                                                                Allowance {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                WPPF {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Special#}
+{#                                                                Bonus {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Mobile#}
+{#                                                                and#}
+{#                                                                Other Allowance {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Project#}
+{#                                                                Expense {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Other#}
+{#                                                                Benefits {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Gross#}
+{#                                                                Salary {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">PF#}
+{#                                                                Com#}
+{#                                                                Contribution {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Grade#}
+{#                                                                Salary A {{ third_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">Year#}
+{#                                                                of#}
+{#                                                                Assessment Duation {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">KPI#}
+{#                                                                Objective {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                KPI-Value {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                KPI-HR {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                KPI-Overall {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">% of#}
+{#                                                                KPI-Objective {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">% of#}
+{#                                                                KPI-Value {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">% of#}
+{#                                                                KPI-HR {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Weighted#}
+{#                                                                Average of KPI % {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Criticality {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Potential#}
+{#                                                                for Improvement {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Technical/Implementation/Operational {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Top/Average/Bottom Performer {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">Best#}
+{#                                                                performer inside team {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">Best#}
+{#                                                                innovator inside team {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">Best#}
+{#                                                                Performer in the organization {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Proposed#}
+{#                                                                Designation {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">Best#}
+{#                                                                Performer among all PM {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Increment Amount (HR) {{ second_last_year }} (A)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">HR#}
+{#                                                                New#}
+{#                                                                Gross Salary {{ second_last_year }}} (A)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">HR#}
+{#                                                                % {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Fixed#}
+{#                                                                Increment (%) {{ second_last_year }} (B)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Fixed#}
+{#                                                                Increment New Gross Salary B {{ second_last_year }}#}
+{#                                                                (B)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">Team#}
+{#                                                                Distribution (%) {{ second_last_year }}} (C)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Difference = New salary A- New salary#}
+{#                                                                B {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                                <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                    Increment: {{ year.year }}#}
+{#                                                                </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Proposed#}
+{#                                                                By SBU Director/PM/Self {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">% of#}
+{#                                                                Increment: {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">New#}
+{#                                                                Gross Salary B {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">CAGR#}
+{#                                                                3#}
+{#                                                                years {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Avarage#}
+{#                                                                3 Years {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Average#}
+{#                                                                Actual {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                KPI-Overall {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Weighted#}
+{#                                                                Average of KPI % {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Increment with KPI % {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">New#}
+{#                                                                Gross Salary KPI % {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">Gap#}
+{#                                                                Manual vs Formula {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Remarks {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #C21010">#}
+{#                                                                Remarks 2 {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <!-- Last Year -->#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Effective Date#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Confirmation / Increment / No#}
+{#                                                                Increment {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Total#}
+{#                                                                Salary#}
+{#                                                                and Allowance {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Basic {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                House Rent {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Medical#}
+{#                                                                Allowance {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Conveyance#}
+{#                                                                Allowance {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                WPPF {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Special#}
+{#                                                                Bonus {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Mobile#}
+{#                                                                and#}
+{#                                                                Other Allowance {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Project#}
+{#                                                                Expense {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Other#}
+{#                                                                Benefits {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Gross#}
+{#                                                                Salary {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">PF#}
+{#                                                                Com#}
+{#                                                                Contribution {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Grade#}
+{#                                                                Salary A {{ second_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">Year#}
+{#                                                                of#}
+{#                                                                Assessment Duation {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">KPI#}
+{#                                                                Objective {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                KPI-Value {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                KPI-HR {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                KPI-Overall {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">% of#}
+{#                                                                KPI-Objective {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">% of#}
+{#                                                                KPI-Value {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">% of#}
+{#                                                                KPI-HR {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Weighted#}
+{#                                                                Average of KPI % {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Criticality {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Potential#}
+{#                                                                for Improvement {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Technical/Implementation/Operational {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Top/Average/Bottom Performer {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">Best#}
+{#                                                                performer inside team {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">Best#}
+{#                                                                innovator inside team {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">Best#}
+{#                                                                Performer in the organization {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Proposed#}
+{#                                                                Designation {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">Best#}
+{#                                                                Performer among all PM {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Increment Amount (HR) {{ first_last_year }} (A)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">HR#}
+{#                                                                New#}
+{#                                                                Gross Salary {{ first_last_year }} (A)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">HR#}
+{#                                                                % {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Fixed#}
+{#                                                                Increment (%) {{ first_last_year }} (B)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Fixed#}
+{#                                                                Increment New Gross Salary B {{ first_last_year }}#}
+{#                                                                (B)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">Team#}
+{#                                                                Distribution (%) {{ first_last_year }} (C)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Difference = New salary A- New salary#}
+{#                                                                B {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                                <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                    Increment: {{ year.year }}#}
+{#                                                                </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Proposed#}
+{#                                                                By SBU Director/PM/Self {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">% of#}
+{#                                                                Increment: {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">New#}
+{#                                                                Gross Salary B {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">CAGR#}
+{#                                                                3#}
+{#                                                                years {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Avarage#}
+{#                                                                3 Years {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Average#}
+{#                                                                Actual {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                KPI-Overall {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Weighted#}
+{#                                                                Average of KPI % {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Increment with KPI % {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">New#}
+{#                                                                Gross Salary KPI % {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">Gap#}
+{#                                                                Manual vs Formula {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Remarks {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #ff7b25">#}
+{#                                                                Remarks 2 {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <!-- Current -->#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Effective Date#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Confirmation / Increment / No#}
+{#                                                                Increment {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Total#}
+{#                                                                Salary#}
+{#                                                                and Allowance {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Basic {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                House Rent {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Medical#}
+{#                                                                Allowance {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Conveyance#}
+{#                                                                Allowance {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                WPPF {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Special#}
+{#                                                                Bonus {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Mobile#}
+{#                                                                and#}
+{#                                                                Other Allowance {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Project#}
+{#                                                                Expense {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Other#}
+{#                                                                Benefits {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Gross#}
+{#                                                                Salary {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">PF#}
+{#                                                                Com#}
+{#                                                                Contribution {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Grade#}
+{#                                                                Salary A {{ first_last_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">Year#}
+{#                                                                of#}
+{#                                                                Assessment Duation {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">KPI#}
+{#                                                                Objective {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                KPI-Value {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                KPI-HR {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                KPI-Overall {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">% of#}
+{#                                                                KPI-Objective {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">% of#}
+{#                                                                KPI-Value {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">% of#}
+{#                                                                KPI-HR {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Weighted#}
+{#                                                                Average of KPI % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Criticality {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Potential#}
+{#                                                                for Improvement {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Technical/Implementation/Operational {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Top/Average/Bottom Performer {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">Best#}
+{#                                                                performer inside team {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">Best#}
+{#                                                                innovator inside team {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">Best#}
+{#                                                                Performer in the organization {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Proposed#}
+{#                                                                Designation {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">Best#}
+{#                                                                Performer among all PM {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Increment Amount (HR) {{ current_year }} (A)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">HR#}
+{#                                                                New#}
+{#                                                                Gross Salary {{ current_year }} (A)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">HR#}
+{#                                                                % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Fixed#}
+{#                                                                Increment (%) {{ current_year }} (B)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Fixed#}
+{#                                                                Increment New Gross Salary B {{ current_year }} (B)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">Team#}
+{#                                                                Distribution (%) {{ current_year }} (C)#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Difference = New salary A- New salary#}
+{#                                                                B {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                                <th style="color: white ;background-color: #5f6e7f">#}
+{#                                                                    Increment: {{ year.year }}#}
+{#                                                                </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Proposed#}
+{#                                                                By SBU Director/PM/Self {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">% of#}
+{#                                                                Increment: {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">New#}
+{#                                                                Gross Salary B {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">CAGR#}
+{#                                                                3#}
+{#                                                                years {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Avarage#}
+{#                                                                3 Years {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Average#}
+{#                                                                Actual {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                KPI-Overall {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Weighted#}
+{#                                                                Average of KPI % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Increment with KPI % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">New#}
+{#                                                                Gross Salary KPI % {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">Gap#}
+{#                                                                Manual vs Formula {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Remarks {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                            <th style="color: white ;background-color: #1D6F42">#}
+{#                                                                Remarks 2 {{ current_year }}#}
+{#                                                            </th>#}
+{#                                                        </tr>#}
+{#                                                        </thead>#}
+{#                                                        <tbody>#}
+{#                                                        {% for key, data in dict.items %}#}
+{#                                                            <tr class="text-nowrap">#}
+{#                                                                <td></td>#}
+{#                                                                {% for emp in data %}#}
+{#                                                                    <td>{{ emp }}</td>#}
+{#                                                                {% endfor %}#}
+{#                                                                    {% with data|length as l %}#}
+{#                                                                        {% with 168|sub:l as b %}#}
+{#                                                                            {% with ''|center:b as range %}#}
+{#                                                                                {% for _ in range %}#}
+{#                                                                                    <td>&nbsp;</td>#}
+{#                                                                                {% endfor %}#}
+{#                                                                            {% endwith %}#}
+{#                                                                        {% endwith %}#}
+{#                                                                    {% endwith %}#}
+{#                                                            </tr>#}
+{#                                                        {% endfor %}#}
+{#                                                        </tbody>#}
+{#                                                    </table>#}
+{#                                                </div>#}

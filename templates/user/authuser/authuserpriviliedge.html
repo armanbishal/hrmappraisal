@@ -1,0 +1,509 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{% url 'usermanagement:authuserrole' %}" class="btn btn-icon"><i
+                            class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>Back Role List</h1>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h4>Role Wise Privileged</h4>
+                </div>
+                <div class="card-body">
+                    <form action=" {% url 'usermanagement:add_role_with_permission' %} " method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="user_id" value="{{ id }}">
+                        <input type="hidden" name="group_id" value="{{ group_id }}">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="list-group" id="list-tab" role="tablist">
+                                    <a class="list-group-item list-group-item-action active" id="list-list-dashboard"
+                                       data-toggle="list" href="#list-dashboard" role="tab">Dashboard</a>
+                                    <a class="list-group-item list-group-item-action" id="list-list-user-management"
+                                       data-toggle="list" href="#list-user-management" role="tab">User Management</a>
+                                    <a class="list-group-item list-group-item-action" id="list-list-configuration"
+                                       data-toggle="list" href="#list-configuration" role="tab">Configuration
+                                        Management</a>
+                                    <a class="list-group-item list-group-item-action" id="list-list-kpi-management"
+                                       data-toggle="list" href="#list-kpi-management" role="tab">KPI Management</a>
+                                    <a class="list-group-item list-group-item-action" id="list-list-bill-management"
+                                       data-toggle="list" href="#list-bill-management" role="tab">Bill Management</a>
+                                    <a class="list-group-item list-group-item-action"
+                                       id="list-list-resource-requisition"
+                                       data-toggle="list" href="#list-resource-requisition" role="tab">Employee</a>
+                                    <a class="list-group-item list-group-item-action" id="list-list-report"
+                                       data-toggle="list" href="#list-report" role="tab">Report Management</a>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="list-dashboard" role="tabpanel"
+                                         aria-labelledby="list-dashboard">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>List</th>
+                                                        <th>Add</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if privileged.count == 0 %}
+                                                        {% for data in modulelall %}
+                                                            {% if data.module_type_id == 1 %}
+                                                                <tr>
+                                                                <td>{{ data.module_name }}</td>
+                                                                {% for url in moduleurl %}
+                                                                    {% if data.id == url.module_id %}
+                                                                        <td>
+                                                                            <input id="checkBox" name="list"
+                                                                                   type="checkbox"
+                                                                                   class="form-check-input"
+                                                                                   value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                    {% if url.id == url.id %} {% endif %}>
+                                                                        </td>
+                                                                    {% endif %}
+
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% for data in modulelall %}
+                                                        {% if data.module_type_id == 1 %}
+                                                            <tr style="background: snow">
+                                                            <td>{{ data.module_name }}</td>
+                                                            {% for url in moduleurl %}
+                                                                {% if data.id == url.module_id %}
+                                                                    <td style="background: snow">
+                                                                        <input {% for privilidge in privileged %}
+                                                                            {% if privilidge.moduleurl_id == url.id %}
+                                                                                checked
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                                id="checkBox" name="list"
+                                                                                type="checkbox"
+                                                                                class="form-check-input"
+                                                                                value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                {% if url.id == url.id %} {% endif %}>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-user-management" role="tabpanel"
+                                         aria-labelledby="list-list-user-management">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>List</th>
+                                                        <th>Add</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if privileged.count == 0 %}
+                                                        {% for data in modulelall %}
+                                                            {% if data.module_type_id == 2 %}
+                                                                <tr>
+                                                                <td>{{ data.module_name }}</td>
+                                                                {% for url in moduleurl %}
+                                                                    {% if data.id == url.module_id %}
+                                                                        <td>
+                                                                            <input id="checkBox" name="list"
+                                                                                   type="checkbox"
+                                                                                   class="form-check-input"
+                                                                                   value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                    {% if url.id == url.id %} {% endif %}>
+                                                                        </td>
+                                                                    {% endif %}
+
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% for data in modulelall %}
+                                                        {% if data.module_type_id == 2 %}
+                                                            <tr style="background: snow">
+                                                            <td>{{ data.module_name }}</td>
+                                                            {% for url in moduleurl %}
+                                                                {% if data.id == url.module_id %}
+                                                                    <td style="background: snow">
+                                                                        <input {% for privilidge in privileged %}
+                                                                            {% if privilidge.moduleurl_id == url.id %}
+                                                                                checked
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                                id="checkBox" name="list"
+                                                                                type="checkbox"
+                                                                                class="form-check-input"
+                                                                                value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                {% if url.id == url.id %} {% endif %}>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-configuration" role="tabpanel"
+                                         aria-labelledby="list-list-configuration">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>List</th>
+                                                        <th>Add</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if privileged.count == 0 %}
+                                                        {% for data in modulelall %}
+                                                            {% if data.module_type_id == 3 %}
+                                                                <tr>
+                                                                <td>{{ data.module_name }}</td>
+                                                                {% for url in moduleurl %}
+                                                                    {% if data.id == url.module_id %}
+                                                                        <td>
+                                                                            <input id="checkBox" name="list"
+                                                                                   type="checkbox"
+                                                                                   class="form-check-input"
+                                                                                   value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                    {% if url.id == url.id %} {% endif %}>
+                                                                        </td>
+                                                                    {% endif %}
+
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% for data in modulelall %}
+                                                        {% if data.module_type_id == 3 %}
+                                                            <tr style="background: snow">
+                                                            <td>{{ data.module_name }}</td>
+                                                            {% for url in moduleurl %}
+                                                                {% if data.id == url.module_id %}
+                                                                    <td style="background: snow">
+                                                                        <input {% for privilidge in privileged %}
+                                                                            {% if privilidge.moduleurl_id == url.id %}
+                                                                                checked
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                                id="checkBox" name="list"
+                                                                                type="checkbox"
+                                                                                class="form-check-input"
+                                                                                value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                {% if url.id == url.id %} {% endif %}>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-kpi-management" role="tabpanel"
+                                         aria-labelledby="list-list-kpi-management">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>List</th>
+                                                        <th>Add</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if privileged.count == 0 %}
+                                                        {% for data in modulelall %}
+                                                            {% if data.module_type_id == 4 %}
+                                                                <tr>
+                                                                <td>{{ data.module_name }}</td>
+                                                                {% for url in moduleurl %}
+                                                                    {% if data.id == url.module_id %}
+                                                                        <td>
+                                                                            <input id="checkBox" name="list"
+                                                                                   type="checkbox"
+                                                                                   class="form-check-input"
+                                                                                   value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                    {% if url.id == url.id %} {% endif %}>
+                                                                        </td>
+                                                                    {% endif %}
+
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% for data in modulelall %}
+                                                        {% if data.module_type_id == 4 %}
+                                                            <tr style="background: snow">
+                                                            <td>{{ data.module_name }}</td>
+                                                            {% for url in moduleurl %}
+                                                                {% if data.id == url.module_id %}
+                                                                    <td style="background: snow">
+                                                                        <input {% for privilidge in privileged %}
+                                                                            {% if privilidge.moduleurl_id == url.id %}
+                                                                                checked
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                                id="checkBox" name="list"
+                                                                                type="checkbox"
+                                                                                class="form-check-input"
+                                                                                value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                {% if url.id == url.id %} {% endif %}>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-bill-management" role="tabpanel"
+                                         aria-labelledby="list-list-bill-management">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>List</th>
+                                                        <th>Add</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if privileged.count == 0 %}
+                                                        {% for data in modulelall %}
+                                                            {% if data.module_type_id == 5 %}
+                                                                <tr>
+                                                                <td>{{ data.module_name }}</td>
+                                                                {% for url in moduleurl %}
+                                                                    {% if data.id == url.module_id %}
+                                                                        <td>
+                                                                            <input id="checkBox" name="list"
+                                                                                   type="checkbox"
+                                                                                   class="form-check-input"
+                                                                                   value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                    {% if url.id == url.id %} {% endif %}>
+                                                                        </td>
+                                                                    {% endif %}
+
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% for data in modulelall %}
+                                                        {% if data.module_type_id == 5 %}
+                                                            <tr style="background: snow">
+                                                            <td>{{ data.module_name }}</td>
+                                                            {% for url in moduleurl %}
+                                                                {% if data.id == url.module_id %}
+                                                                    <td style="background: snow">
+                                                                        <input {% for privilidge in privileged %}
+                                                                            {% if privilidge.moduleurl_id == url.id %}
+                                                                                checked
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                                id="checkBox" name="list"
+                                                                                type="checkbox"
+                                                                                class="form-check-input"
+                                                                                value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                {% if url.id == url.id %} {% endif %}>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-resource-requisition" role="tabpanel"
+                                         aria-labelledby="list-list-resource-requisition">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>List</th>
+                                                        <th>Add</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if privileged.count == 0 %}
+                                                        {% for data in modulelall %}
+                                                            {% if data.module_type_id == 6 %}
+                                                                <tr>
+                                                                <td>{{ data.module_name }}</td>
+                                                                {% for url in moduleurl %}
+                                                                    {% if data.id == url.module_id %}
+                                                                        <td>
+                                                                            <input id="checkBox" name="list"
+                                                                                   type="checkbox"
+                                                                                   class="form-check-input"
+                                                                                   value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                    {% if url.id == url.id %} {% endif %}>
+                                                                        </td>
+                                                                    {% endif %}
+
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% for data in modulelall %}
+                                                        {% if data.module_type_id == 6 %}
+                                                            <tr style="background: snow">
+                                                            <td>{{ data.module_name }}</td>
+                                                            {% for url in moduleurl %}
+                                                                {% if data.id == url.module_id %}
+                                                                    <td style="background: snow">
+                                                                        <input {% for privilidge in privileged %}
+                                                                            {% if privilidge.moduleurl_id == url.id %}
+                                                                                checked
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                                id="checkBox" name="list"
+                                                                                type="checkbox"
+                                                                                class="form-check-input"
+                                                                                value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                {% if url.id == url.id %} {% endif %}>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-report" role="tabpanel"
+                                         aria-labelledby="list-list-report">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>List</th>
+                                                        <th>Add</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if privileged.count == 0 %}
+                                                        {% for data in modulelall %}
+                                                            {% if data.module_type_id == 7 %}
+                                                                <tr>
+                                                                <td>{{ data.module_name }}</td>
+                                                                {% for url in moduleurl %}
+                                                                    {% if data.id == url.module_id %}
+                                                                        <td>
+                                                                            <input id="checkBox" name="list"
+                                                                                   type="checkbox"
+                                                                                   class="form-check-input"
+                                                                                   value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                    {% if url.id == url.id %} {% endif %}>
+                                                                        </td>
+                                                                    {% endif %}
+
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% for data in modulelall %}
+                                                        {% if data.module_type_id == 7 %}
+                                                            <tr style="background: snow">
+                                                            <td>{{ data.module_name }}</td>
+                                                            {% for url in moduleurl %}
+                                                                {% if data.id == url.module_id %}
+                                                                    <td style="background: snow">
+                                                                        <input {% for privilidge in privileged %}
+                                                                            {% if privilidge.moduleurl_id == url.id %}
+                                                                                checked
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                                id="checkBox" name="list"
+                                                                                type="checkbox"
+                                                                                class="form-check-input"
+                                                                                value="{{ url.id }},{{ url.module_id }},{{ url.module_type_id }} "
+                                                                                {% if url.id == url.id %} {% endif %}>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </section>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+{% extends "base.html" %} {% load static %} {% block content %}
+
+    <style>
+
+        label {
+            font-weight: 700;
+            color: #1c7430;
+            font-size: 16px;
+        }
+
+        h5 {
+            color: #1c7430;
+            font-size: 16px;
+        }
+    </style>
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-header-back">
+                    <a href="{% url 'kpimanagement:assessmentReport' %}" class="btn btn-icon"><i
+                            class="fas fa-arrow-left"></i></a>
+                </div>
+                <h1>Assessment Details</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="#">Assessment Details</a></div>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0 text-dark">{{ employee.name }} ( {{ employee.employee_id }} )</h3>
+                    </div>
+                    <div class="card-body">
+                        {######################################################}
+                        {################### KPI FORM #########################}
+                        {######################################################}
+                        <form action="" method="post"
+                              enctype="multipart/form-data2"
+                              id="sbu-search-form" autocomplete="off" name="search" value="searchForm">
+                            {% csrf_token %}
+                            <div class="row mb-5">
+                                <div class="col-lg-4 mb-4"><label></label>
+                                    <h5 class="mb-0">Date of Joining: </h5>
+                                    <p class="mb-0">{{ employee.date_of_joining }}</p>
+                                </div>
+                                <div class="col-lg-4 mb-4">
+                                    <label>Confirmation / Increment / No Increment</label>
+                                    {% if data2.confirmation_increment_noincrement != None %}
+                                        <select name="{{ form.confirmation_increment_noincrement.html_name }}"
+                                                id="{{ form.confirmation_increment_noincrement.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in confirmantion_increment_noincrement_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.confirmation_increment_noincrement %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.confirmation_increment_noincrement.html_name }}"
+                                                id="{{ form.confirmation_increment_noincrement.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.confirmation_increment_noincrement %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4">
+                                    <label>Duration</label> <br/>
+                                    {{ data2.employee.date_of_joining|timesince }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label></label>
+                                    <h5 class="mb-0">SBU: </h5>
+                                    <p class="mb-0">{{ employee.sbu }}</p>
+                                </div>
+                                <div class="col-lg-4 mb-4"><label></label>
+                                    <h5 class="mb-0">Sub SBU: </h5>
+                                    <p class="mb-0">{{ employee.sub_sbu }}</p>
+                                </div>
+                                <div class="col-lg-4 mb-4"><label></label>
+                                    <h5 class="mb-0">PM Name: </h5>
+                                    <p class="mb-0">{{ employee.supervisor }}</p>
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>SBU Director
+                                    Name </label><br/>{{ data2.employee.sbu.director_name }}
+                                </div>
+                                <div class="col-lg-4 mb-4">
+                                    <label>Effective Date </label> <br/>
+                                    1-Jan-{{ year.year }}
+                                </div>
+                                <div class="col-lg-4 mb-4">
+                                    <label> Total Salary and Allowance {{ first_last_year }}</label> <br/>
+                                    {{ data2.total_salary_and_allowance }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label> Basic {{ first_last_year }} </label>
+                                    <br/> {{ data2.basic_salary }}</div>
+                                <div class="col-lg-4 mb-4"><label>House Rent {{ first_last_year }} </label>
+                                    <br/> {{ data2.house_rent }}</div>
+                                <div class="col-lg-4 mb-4"><label> Medical
+                                    Allowance {{ first_last_year }}</label> <br/> {{ data2.medical_allowance }}</div>
+                                <div class="col-lg-4 mb-4"><label> Conveyance
+                                    Allowance {{ first_last_year }}</label> <br/> {{ data2.conveyance_allowance }}</div>
+                                <div class="col-lg-4 mb-4"><label>WPPF {{ first_last_year }} </label>
+                                    <br/> {{ data2.wppf }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>Special
+                                    Bonus {{ first_last_year }} </label> <br/> {{ data2.special_bonus }}</div>
+                                <div class="col-lg-4 mb-4"><label> Mobile
+                                    and
+                                    Other Allowance {{ first_last_year }} </label>
+                                    <br/>{{ data2.mobile_and_other_allowance }}</div>
+                                <div class="col-lg-4 mb-4"><label> Project
+                                    Expense {{ first_last_year }}</label> <br/> {{ data2.project_expense }}</div>
+                                <div class="col-lg-4 mb-4"><label> Other
+                                    Benefits {{ first_last_year }}</label> <br/> {{ data2.other_benefit }}</div>
+                                <div class="col-lg-4 mb-4"><label> Gross
+                                    Salary {{ first_last_year }} </label> <br/> {{ data2.gross_salary }}</div>
+                                <div class="col-lg-4 mb-4"><label>PF Com Contribution {{ first_last_year }}</label>
+                                    <br/> {{ data2.pf_com_contribution }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label> Year of Assessment Duration {{ current_year }} </label> <br/>Grade 2022
+                                    {{ data2.employee.assessmentDuration }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12"></div>
+                                <div class="col-lg-4 mb-4"><label> KPI
+                                    Objective {{ current_year }}</label> <br/>
+                                    {% if data2.kpi_objective != None %}
+                                        <select name="{{ form.kpi_objective.html_name }}"
+                                                id="{{ form.kpi_objective.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in kpi_objective_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.kpi_objective %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.kpi_objective.html_name }}"
+                                                id="{{ form.kpi_objective.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.kpi_objective %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label> KPI-Value {{ current_year }} </label> <br/>
+                                    {% if data2.kpi_value != None %}
+                                        <select name="{{ form.kpi_value.html_name }}"
+                                                id="{{ form.kpi_value.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in kpi_value_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.kpi_value %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.kpi_value.html_name }}"
+                                                id="{{ form.kpi_value.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.kpi_value %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label> KPI-HR {{ current_year }}</label> <br/>
+                                    {% if data2.hr_rating != None %}
+                                        <select name="{{ form.hr_rating.html_name }}"
+                                                id="{{ form.hr_rating.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in hr_rating_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.hr_rating %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.hr_rating.html_name }}"
+                                                id="{{ form.hr_rating.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.hr_rating %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-lg-4 mb-4"><label>% of
+                                    KPI-Objective {{ current_year }}</label> <br/>
+                                    {% if data2.percentage_kpi_objective != None %}
+                                        {{ data2.percentage_kpi_objective }}%
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>% of
+                                    KPI-Value {{ current_year }}</label> <br/>
+                                    {% if data2.percentage_kpi_value != None %}
+                                        {{ data2.percentage_kpi_value }}%
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-lg-4 mb-4"><label>% of
+                                    KPI-HR {{ current_year }}</label> <br/> {% if data2.percentage_kpi_hr != None %}
+                                    {{ data2.percentage_kpi_hr }}%
+                                {% endif %}</div>
+
+
+                                <div class="col-lg-4 mb-4"><label> Weighted
+                                    Average of KPI % {{ current_year }}</label> <br/>
+                                    {% if data2.weighted_average_kpi != None %}
+                                        {{ data2.weighted_average_kpi }}%
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label> KPI-Overall {{ current_year }}</label> <br/>
+                                    {% if data2.kpi_overall != None %}
+                                        {{ data2.kpi_overall }}
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-lg-12"></div>
+
+                                <div class="col-lg-4 mb-4"><label>Criticality {{ current_year }}</label> <br/>
+                                    {% if data2.criticality != None %}
+                                        <select name="{{ form.criticality.html_name }}"
+                                                id="{{ form.criticality.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in criticality_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.criticality %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.criticality.html_name }}"
+                                                id="{{ form.criticality.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.criticality %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>Potential
+                                    for Improvement {{ current_year }}</label>
+                                    {% if data2.potential_for_improvement != None %}
+                                        <select name="{{ form.potential_for_improvement.html_name }}"
+                                                id="{{ form.potential_for_improvement.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in potential_for_improvement_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.potential_for_improvement %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.potential_for_improvement.html_name }}"
+                                                id="{{ form.potential_for_improvement.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.potential_for_improvement %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}</div>
+
+
+                                <div class="col-lg-4 mb-4">
+                                    <label>
+                                        Technical/Implementation/Operational {{ current_year }}</label> <br/>
+                                    {% if data2.technical_implementation_operational != None %}
+                                        <select name="{{ form.technical_implementation_operational.html_name }}"
+                                                id="{{ form.technical_implementation_operational.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in technical_implementation_operational_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.technical_implementation_operational %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.technical_implementation_operational.html_name }}"
+                                                id="{{ form.technical_implementation_operational.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.technical_implementation_operational %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="col-lg-4 mb-4"><label>Top/Average/Bottom
+                                    Performer {{ current_year }}</label>
+                                    {% if data2.top_average_bottom_performer != None %}
+                                        <select name="{{ form.top_average_bottom_performer.html_name }}"
+                                                id="{{ form.top_average_bottom_performer.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in top_average_bottom_performer_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.top_average_bottom_performer %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.top_average_bottom_performer.html_name }}"
+                                                id="{{ form.top_average_bottom_performer.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.top_average_bottom_performer %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="col-lg-4 mb-4"><label> Best performer inside team {{ current_year }}</label>
+                                    {% if data2.best_performer_team != None %}
+                                        <select name="{{ form.best_performer_team.html_name }}"
+                                                id="{{ form.best_performer_team.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in best_performer_team_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.best_performer_team %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.best_performer_team.html_name }}"
+                                                id="{{ form.best_performer_team.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.best_performer_team %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-lg-4 mb-4"><label>Best
+                                    innovator inside team {{ current_year }}</label>
+                                    {% if data2.best_innovator_team != None %}
+                                        <select name="{{ form.best_innovator_team.html_name }}"
+                                                id="{{ form.best_innovator_team.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in best_innovator_team_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.best_innovator_team %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.best_innovator_team.html_name }}"
+                                                id="{{ form.best_innovator_team.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.best_innovator_team %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="col-lg-4 mb-4"><label>Best
+                                    Performer in the organization {{ current_year }}</label>
+                                    {% if data2.best_performer_org != None %}
+                                        <select name="{{ form.best_performer_org.html_name }}"
+                                                id="{{ form.best_performer_org.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in best_performer_organization_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.best_performer_org %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.best_performer_org.html_name }}"
+                                                id="{{ form.best_performer_org.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.best_performer_org %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="col-lg-4 mb-4"><label> Proposed
+                                    Designation {{ current_year }}</label>
+                                    {% if data2.proposed_designation != None %}
+                                        <input
+                                                class="form-control"
+                                                type="text"
+                                                id="{{ form.proposed_designation.id_for_label }}"
+                                                name="{{ form.proposed_designation.html_name }}"
+                                                value="{{ data2.proposed_designation }}"
+                                                placeholder="Proposed Designation"
+                                        />
+                                    {% else %}
+                                        <input
+                                                class="form-control"
+                                                type="text"
+                                                id="{{ form.proposed_designation.id_for_label }}"
+                                                name="{{ form.proposed_designation.html_name }}"
+                                                value=""
+                                                placeholder="Proposed Designation"
+                                        />
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="col-lg-4 mb-4"><label>Best
+                                    Performer among all PM {{ current_year }}</label>
+                                    {% if data2.best_performer_pm != None %}
+                                        <select name="{{ form.best_performer_pm.html_name }}"
+                                                id="{{ form.best_performer_pm.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in best_performer_pm_obj %}
+                                                <option value="{{ widget.id }}"
+                                                        {% if widget == data2.best_performer_pm %}
+                                                        selected{% endif %}>{{ widget }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select name="{{ form.best_performer_pm.html_name }}"
+                                                id="{{ form.best_performer_pm.id_for_label }}"
+                                                value=""
+                                                class="select2 form-select">
+                                            {% for widget in form.best_performer_pm %}
+                                                {{ widget }}
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="col-lg-12 mt-4"></div>
+                                <div class="col-lg-4 mb-4"><label> Salary
+                                    Grade {{ current_year }}</label> <br/> {{ data2.salary_grade }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>Increment Amount (HR) {{ current_year }} (A)</label>
+                                    <br/> {{ data2.increment_amount_a }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>New
+                                    Gross Salary {{ current_year }} (A) </label> <br/> {{ data2.hr_new_gross_salary_a }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>HR
+                                    % {{ current_year }}</label> <br/>   {% if data2.percentage_hr_a != None %}
+                                    {{ data2.percentage_hr_a }}      HR % 2022
+                                {% else %}
+                                    None
+                                {% endif %}</div>
+                                <div class="col-lg-4 mb-4"><label> Fixed
+                                    Increment (%) {{ current_year }} (B)</label> <br/>
+                                    {{ data2.fixed_increment_b }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>Fixed
+                                    Increment New Gross Salary B {{ current_year }} (B)</label>
+                                    <br/> {{ data2.fixed_increment_new_gross_salary_b }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>Team
+                                    Distribution (%) {{ current_year }} (C)</label>
+                                    <br/> {{ data2.team_distribution_percentage_c }}
+                                </div>
+
+                                <div class="col-lg-4 mb-4"><label> Difference = New salary A- New salary B {{ current_year }}</label> <br/>
+                                    ({{ data2.difference_new_salary_a_new_salary_b }})
+                                </div>
+                                <div class="col-lg-4 mb-4"><label> Proposed
+                                    By SBU Director/PM/Self {{ current_year }}</label> <br/>
+                                    {% if data2.proposed_by_sbu_director_pm_self != None %}
+                                        <input name="{{ form.proposed_by_sbu_director_pm_self.html_name }}"
+                                               id="{{ form.proposed_by_sbu_director_pm_self.id_for_label }}"
+                                               type="text" class="form-control"
+                                               value="{{ data2.proposed_by_sbu_director_pm_self }}"
+                                               placeholder=""
+                                        />
+                                    {% else %}
+                                        <input name="{{ form.proposed_by_sbu_director_pm_self.html_name }}"
+                                               id="{{ form.proposed_by_sbu_director_pm_self.id_for_label }}"
+                                               type="text" class="form-control"
+                                               value=""
+                                               placeholder="Enter Amount"
+                                        />
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>% of Increment: {{ year.year }}</label> <br/>
+                                    {% if data2.percentage_of_increment != None %}
+                                        {{ data2.percentage_of_increment }}%
+                                    {% else %}
+                                        None
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>New Gross Salary B {{ current_year }}</label> <br/>{{ data2.new_gross_salary_b }}
+
+                                </div>
+
+                                <div class="col-lg-4 mb-4"><label>CAGR 3
+                                    years {{ current_year }}</label> <br/> {{ data2.cagr_three_years }}
+
+                                </div>
+
+
+                                <div class="col-lg-4 mb-4"><label> Avarage
+                                    3 Years {{ current_year }}</label> <br/>
+                                    {{ data2.average_three_years }}
+
+                                </div>
+                                <div class="col-lg-4 mb-4"><label> Average
+                                    Actual {{ current_year }}</label><br/> {{ data2.average_actual }}
+                                </div>
+                                <div class="col-lg-4 mb-4">
+                                    <label>KPI-Overall {{ current_year }}</label> <br/>{{ data2.kpi_overall }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label> Weighted
+                                    Average of KPI % {{ current_year }} </label>
+                                    <br/>
+                                    {% if data2.weighted_average_kpi != None %}
+                                        {{ data2.weighted_average_kpi }}%
+                                    {% else %}
+                                        None
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>Increment with KPI % {{ current_year }}</label>
+                                    <br/> {{ data2.increment_with_kpi_percentage }}
+                                </div>
+
+                                <div class="col-lg-4 mb-4"><label> New Gross Salary KPI % {{ current_year }}</label>
+                                    <br/> {{ data2.new_gross_salary_kpi_percentage }}
+                                </div>
+                                <div class="col-lg-4 mb-4"><label>Gap
+                                    Manual vs Formula {{ current_year }}</label> <br/> {{ data2.gap_manual_formula }}
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6 mb-4"><label> Remarks {{ current_year }}</label> <br/>
+                                    {% if data2.remarks != None %}
+                                        <textarea
+                                                name="{{ form.remarks.html_name }}"
+                                                cols="30"
+                                                rows="1" type="text"
+                                                class="form-control"
+                                                id="{{ form.remarks.id_for_label }}"
+                                                style="resize: none"
+                                                placeholder="Remarks">{{ data2.remarks }}</textarea>
+                                    {% else %}
+                                        <textarea
+                                                name="{{ form.remarks.html_name }}"
+                                                cols="30"
+                                                rows="1" type="text"
+                                                class="form-control"
+                                                id="{{ form.remarks.id_for_label }}"
+                                                style="resize: none"
+                                                placeholder="Remarks"></textarea>
+                                    {% endif %}</div>
+
+
+                                <div class="col-lg-6 mb-4"><label> Remarks 2 {{ current_year }}</label>
+                                    {% if data2.remarks_two != None %}
+                                        <textarea
+                                                name="{{ form.remarks_two.html_name }}"
+                                                cols="30"
+                                                rows="1" type="text"
+                                                class="form-control"
+                                                id="{{ form.remarks_two.id_for_label }}"
+                                                style="resize: none"
+                                                placeholder="Remarks">{{ data2.remarks_two }}</textarea>
+                                    {% else %}
+                                        <textarea
+                                                name="{{ form.remarks_two.html_name }}"
+                                                cols="30"
+                                                rows="1" type="text"
+                                                class="form-control"
+                                                id="{{ form.remarks_two.id_for_label }}"
+                                                style="resize: none"
+                                                placeholder="Remarks"></textarea>
+                                    {% endif %}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button name="report-save" type="submit" class="btn btn-primary mr-2">
+                                        Save changes
+                                    </button>
+                                    <a style="margin-right: 8px" href="{% url 'kpimanagement:assessmentReport' %}">
+                                        <button type="button" class="btn btn-outline-secondary">Cancel
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
